@@ -12,8 +12,3 @@ build:
 
 publish: build
 	rsync --rsync-path="sudo /usr/bin/rsync" ./poker matrix:/opt/poker
-
-# ssh matrix
-# cd /var/www
-# sudo unzip element-custom.zip
-# sudo cp -R webapp/* element-custom
