@@ -29,6 +29,14 @@ func (s *Store) AddPlayer(roomID types.ID, newPlayer Player) {
 func (s *Store) RemovePlayer(roomID types.ID, player Player) {
 	room := s.EnsureRoom(roomID)
 	room.RemovePlayer(player)
+	s.CleanUpRoomIfNeeded(room)
+}
+
+func (s *Store) CleanUpRoomIfNeeded(room *Room) {
+	hasPlayers := len(room.players) > 0
+	if !hasPlayers {
+		delete(s.rooms, room.id)
+	}
 }
 
 func (s Store) EnsureRoom(roomID types.ID) *Room {
@@ -49,6 +57,7 @@ func (s *Store) StartVoting(roomID types.ID) {
 	room, ok := s.rooms[roomID]
 	if !ok {
 		logrus.WithFields(logrus.Fields{
+			"fn":     "StartVoting",
 			"roomID": roomID,
 		}).Warn("room not found")
 		return
@@ -56,4 +65,30 @@ func (s *Store) StartVoting(roomID types.ID) {
 
 	room.StartVoting()
 
+}
+
+func (s *Store) Reveal(roomID types.ID) {
+	room, ok := s.rooms[roomID]
+	if !ok {
+		logrus.WithFields(logrus.Fields{
+			"fn":     "Reveal",
+			"roomID": roomID,
+		}).Warn("room not found")
+		return
+	}
+
+	room.Reveal()
+}
+
+func (s *Store) Reset(roomID types.ID) {
+	room, ok := s.rooms[roomID]
+	if !ok {
+		logrus.WithFields(logrus.Fields{
+			"fn":     "Reset",
+			"roomID": roomID,
+		}).Warn("room not found")
+		return
+	}
+
+	room.Reset()
 }

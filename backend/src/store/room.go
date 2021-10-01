@@ -49,29 +49,51 @@ func (r *Room) RemovePlayer(p Player) {
 }
 
 type State struct {
+	Player  Player   `json:"player"`
 	Players []Player `json:"players"`
 	Status  Status   `json:"status"`
 }
 
 func (r *Room) EmitState() {
 
-	state := State{
-		Players: r.players,
-		Status:  r.status,
-	}
-	payload, err := json.Marshal(state)
-	if err != nil {
-		log.Error(err)
+	if len(r.players) > 0 {
+		r.players[0].IsAdmin = true
 	}
 
 	for _, player := range r.players {
+
+		state := State{
+			Player:  player,
+			Players: r.players,
+			Status:  r.status,
+		}
+		payload, err := json.Marshal(state)
+		if err != nil {
+			log.Error(err)
+		}
+
 		player.Conn.WriteMessage(1, payload)
 	}
+
 }
 
 func (r *Room) StartVoting() {
 	r.mtx.Lock()
 	r.status = StatusInProgress
+	r.EmitState()
+	r.mtx.Unlock()
+}
+
+func (r *Room) Reveal() {
+	r.mtx.Lock()
+	r.status = StatusRevealed
+	r.EmitState()
+	r.mtx.Unlock()
+}
+
+func (r *Room) Reset() {
+	r.mtx.Lock()
+	r.status = StatusStart
 	r.EmitState()
 	r.mtx.Unlock()
 }

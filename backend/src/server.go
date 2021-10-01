@@ -29,6 +29,8 @@ func NewServer() Server {
 	}
 
 	srv.actionMap[store.TypeStartVoting] = srv.StartVoting
+	srv.actionMap[store.TypeReveal] = srv.Reveal
+	srv.actionMap[store.TypeReset] = srv.Reset
 
 	return srv
 }
@@ -107,4 +109,12 @@ func (s Server) ListenUntilDesctonnects(conn *websocket.Conn, roomID types.ID) {
 
 func (s Server) StartVoting(roomID types.ID, _ []byte) {
 	s.store.StartVoting(roomID)
+}
+
+func (s Server) Reveal(roomID types.ID, _ []byte) {
+	s.store.Reveal(roomID)
+}
+
+func (s Server) Reset(roomID types.ID, _ []byte) {
+	s.store.Reset(roomID)
 }

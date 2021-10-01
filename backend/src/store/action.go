@@ -7,4 +7,6 @@ type Action struct {
 
 const (
 	TypeStartVoting = "StartVoting"
+	TypeReveal      = "Reveal"
+	TypeReset       = "Reset"
 )
