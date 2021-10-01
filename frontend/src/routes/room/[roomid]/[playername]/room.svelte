@@ -1,23 +1,24 @@
-<script>
+<script lang="ts">
 import { page } from "$app/stores";
 import { api } from "../../../../api"
+import { Status } from "../../../../api/state-store";
 import { Cards } from "../../../../components/cards";
 import { PlayerList } from "../../../../components/player-list"
+import type { Player } from "../../../../components/player-list/player";
 import { RoomController } from "../../../../components/room-controller";
 import { RoomStatus } from "../../../../components/room-status"
 
 
 const { 
     roomid:     roomID,
-    playername: playerName 
+    playername: playerName,
 } = $page.params
 
 
 let player;
 let players = []
-let roomStatus = ""
+let roomStatus: Status = Status.Init
 
-console.debug('[DEBUG] ', {roomID, playerName} )
 api.register(roomID, playerName, (data) => {
     console.debug('[DEBUG] ', {data} )
 
@@ -27,6 +28,33 @@ api.register(roomID, playerName, (data) => {
 
 })
 
+function onChoose(card: string){
+    api.choose(card)
+}
+
+function hasPlayerChosen(player: Player): boolean {
+    if(!player){
+        return false
+    }
+
+    return player.chosenCard !== ""
+}
+
+function isGameRunnin(roomStatus: Status): boolean {
+    return roomStatus === Status.InProgress
+}
+
+function isVotingInProgress(roomStatus: Status): boolean {
+    return roomStatus === Status.InProgress
+}
+
+function isRevealed(roomStatus: Status): boolean {
+    return roomStatus === Status.Revealed
+}
+
+// $: console.debug('[DEBUG] ', {roomStatus, player} )
+// $: console.debug('[DEBUG] ', {hasPlayerChosen: hasPlayerChosen(player), isGameRunnin:isGameRunnin(roomStatus)} )
+
 </script>
 
 
@@ -35,5 +63,11 @@ api.register(roomID, playerName, (data) => {
 {/if}
 
 <RoomStatus status={roomStatus}/>
-<PlayerList players={players} />
-<Cards />
+
+{#if hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
+    <PlayerList players={players} isRevealed={isRevealed(roomStatus)} />
+{/if}
+
+{#if !hasPlayerChosen(player) && isGameRunnin(roomStatus)}
+    <Cards on:choose={(event) => onChoose(event.detail) }/>
+{/if}

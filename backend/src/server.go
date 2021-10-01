@@ -13,7 +13,7 @@ import (
 	"github.com/sprinteins/poker/src/x/types"
 )
 
-type ActionHandlerFn func(roomID types.ID, actionAsJSON []byte)
+type ActionHandlerFn func(roomID types.ID, playerID types.ID, actionAsJSON []byte)
 type ActionMap map[store.ActionType]ActionHandlerFn
 
 type Server struct {
@@ -31,6 +31,7 @@ func NewServer() Server {
 	srv.actionMap[store.TypeStartVoting] = srv.StartVoting
 	srv.actionMap[store.TypeReveal] = srv.Reveal
 	srv.actionMap[store.TypeReset] = srv.Reset
+	srv.actionMap[store.TypeChoose] = srv.Choose
 
 	return srv
 }
@@ -77,11 +78,15 @@ func (s Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Context
 	}
 
 	s.store.AddPlayer(roomID, player)
-	s.ListenUntilDesctonnects(conn, roomID)
+	s.ListenUntilDesctonnects(conn, roomID, player)
 	s.store.RemovePlayer(roomID, player)
 }
 
-func (s Server) ListenUntilDesctonnects(conn *websocket.Conn, roomID types.ID) {
+func (s Server) ListenUntilDesctonnects(
+	conn *websocket.Conn,
+	roomID types.ID,
+	player store.Player,
+) {
 	for {
 		_, body, err := conn.ReadMessage()
 		if err != nil {
@@ -103,18 +108,35 @@ func (s Server) ListenUntilDesctonnects(conn *websocket.Conn, roomID types.ID) {
 			continue
 		}
 
-		handleAction(roomID, body)
+		handleAction(roomID, player.ID, body)
 	}
 }
 
-func (s Server) StartVoting(roomID types.ID, _ []byte) {
+func (s Server) StartVoting(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.StartVoting(roomID)
 }
 
-func (s Server) Reveal(roomID types.ID, _ []byte) {
+func (s Server) Reveal(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.Reveal(roomID)
 }
 
-func (s Server) Reset(roomID types.ID, _ []byte) {
+func (s Server) Reset(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.Reset(roomID)
+}
+
+func (s Server) Choose(roomID types.ID, playerID types.ID, payload []byte) {
+	chooseAction := ActionChoose{}
+	err := json.Unmarshal(payload, &chooseAction)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%s", payload),
+		}).Error("could not parse choose action")
+	}
+
+	s.store.Choose(roomID, playerID, chooseAction.Payload)
+
+}
+
+type ActionChoose struct {
+	Payload string `json:"payload"`
 }

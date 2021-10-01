@@ -7,6 +7,7 @@ enum ActionTypes {
     StartVoting = "StartVoting",
     Reveal      = "Reveal",
     Reset       = "Reset",
+    Choose      = "Choose" 
 }
 
 class API {
@@ -34,6 +35,14 @@ class API {
     public resetRoom() {
         const msg = {
             type: ActionTypes.Reset
+        }
+        this.send(msg)
+    }
+
+    public choose(card: string){
+        const msg = {
+            type: ActionTypes.Choose,
+            payload: card,
         }
         this.send(msg)
     }

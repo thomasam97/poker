@@ -53,13 +53,22 @@ func (s Store) EnsureRoom(roomID types.ID) *Room {
 	return room
 }
 
-func (s *Store) StartVoting(roomID types.ID) {
+func (s *Store) searchRoom(roomID types.ID) *Room {
 	room, ok := s.rooms[roomID]
 	if !ok {
 		logrus.WithFields(logrus.Fields{
 			"fn":     "StartVoting",
 			"roomID": roomID,
 		}).Warn("room not found")
+		return nil
+	}
+
+	return room
+}
+
+func (s *Store) StartVoting(roomID types.ID) {
+	room := s.searchRoom(roomID)
+	if room == nil {
 		return
 	}
 
@@ -68,12 +77,8 @@ func (s *Store) StartVoting(roomID types.ID) {
 }
 
 func (s *Store) Reveal(roomID types.ID) {
-	room, ok := s.rooms[roomID]
-	if !ok {
-		logrus.WithFields(logrus.Fields{
-			"fn":     "Reveal",
-			"roomID": roomID,
-		}).Warn("room not found")
+	room := s.searchRoom(roomID)
+	if room == nil {
 		return
 	}
 
@@ -81,14 +86,19 @@ func (s *Store) Reveal(roomID types.ID) {
 }
 
 func (s *Store) Reset(roomID types.ID) {
-	room, ok := s.rooms[roomID]
-	if !ok {
-		logrus.WithFields(logrus.Fields{
-			"fn":     "Reset",
-			"roomID": roomID,
-		}).Warn("room not found")
+	room := s.searchRoom(roomID)
+	if room == nil {
 		return
 	}
 
 	room.Reset()
+}
+
+func (s *Store) Choose(roomID types.ID, playerID types.ID, card string) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.Choose(playerID, card)
 }

@@ -9,4 +9,5 @@ const (
 	TypeStartVoting = "StartVoting"
 	TypeReveal      = "Reveal"
 	TypeReset       = "Reset"
+	TypeChoose      = "Choose"
 )

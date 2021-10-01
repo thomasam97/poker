@@ -1,4 +1,5 @@
 export interface Player {
-    name: string
-    isAdmin: boolean
+    name:       string
+    isAdmin:    boolean
+    chosenCard: string
 }

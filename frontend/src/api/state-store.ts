@@ -1,9 +1,10 @@
 import { writable } from "svelte/store";
 
 export enum Status {
-    Start =      "Start",
+    Init       = "Init",     
+    Start      = "Start",
     InProgress = "InProgress",
-    Revealed =   "Revealed",
+    Revealed   = "Revealed",
 }
 
 export interface State {

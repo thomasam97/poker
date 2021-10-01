@@ -10,7 +10,7 @@ import (
 
 type Room struct {
 	id      types.ID
-	players []Player
+	players []*Player
 	mtx     sync.Mutex
 	status  Status
 }
@@ -18,14 +18,14 @@ type Room struct {
 func NewRoom(id types.ID) Room {
 	return Room{
 		id:      id,
-		players: make([]Player, 0),
+		players: make([]*Player, 0),
 		status:  StatusStart,
 	}
 }
 
 func (r *Room) AddPlayer(p Player) {
 	r.mtx.Lock()
-	r.players = append(r.players, p)
+	r.players = append(r.players, &p)
 	r.EmitState()
 	r.mtx.Unlock()
 }
@@ -40,6 +40,20 @@ func (r *Room) findPlayerIndex(p Player) int {
 	return wantedIndex
 }
 
+func (r *Room) findPlayerByID(playerID types.ID) *Player {
+	for _, player := range r.players {
+		if player.ID == playerID {
+			return player
+		}
+	}
+	log.WithFields(log.Fields{
+		"playerID": playerID,
+		"roomID":   r.id,
+	}).Error("could not find player")
+
+	return nil
+}
+
 func (r *Room) RemovePlayer(p Player) {
 	r.mtx.Lock()
 	index := r.findPlayerIndex(p)
@@ -49,9 +63,9 @@ func (r *Room) RemovePlayer(p Player) {
 }
 
 type State struct {
-	Player  Player   `json:"player"`
-	Players []Player `json:"players"`
-	Status  Status   `json:"status"`
+	Player  *Player   `json:"player"`
+	Players []*Player `json:"players"`
+	Status  Status    `json:"status"`
 }
 
 func (r *Room) EmitState() {
@@ -79,21 +93,40 @@ func (r *Room) EmitState() {
 
 func (r *Room) StartVoting() {
 	r.mtx.Lock()
+	defer r.mtx.Unlock()
 	r.status = StatusInProgress
 	r.EmitState()
-	r.mtx.Unlock()
 }
 
 func (r *Room) Reveal() {
 	r.mtx.Lock()
+	defer r.mtx.Unlock()
 	r.status = StatusRevealed
 	r.EmitState()
-	r.mtx.Unlock()
 }
 
 func (r *Room) Reset() {
 	r.mtx.Lock()
+	defer r.mtx.Unlock()
 	r.status = StatusStart
+	for _, player := range r.players {
+		player.ChosenCard = ""
+	}
 	r.EmitState()
-	r.mtx.Unlock()
+}
+
+func (r *Room) Choose(playerID types.ID, card string) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	player := r.findPlayerByID(playerID)
+	if player == nil {
+		return
+	}
+	log.WithFields(log.Fields{
+		"card":     card,
+		"playerID": playerID,
+		"roomID":   r.id,
+	}).Info("choosing card")
+	player.ChosenCard = card
+	r.EmitState()
 }

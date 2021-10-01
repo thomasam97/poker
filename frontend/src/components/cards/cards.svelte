@@ -1,5 +1,9 @@
 <script>
-import Card from "./card.svelte";
+    import Card from "./card.svelte";
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
 
     let cards = [
         "1",
@@ -7,7 +11,12 @@ import Card from "./card.svelte";
         "3",
         "5",
         "8",
-        "13"
+        "13",
+        "20",
+        "40",
+        "100",
+        "∞",
+        "?"
     ]
 </script>
 
@@ -15,7 +24,7 @@ import Card from "./card.svelte";
 <ol>
     {#each cards as card}
         <li>
-            <Card label={card} />
+            <Card label={card} on:click={ () => dispatch("choose", card)} />
         </li>
     {/each}
 </ol>
