@@ -21,7 +21,6 @@ let players = []
 let roomStatus: Status = Status.Init
 
 api.register(roomID, playerName, (data) => {
-    console.debug('[DEBUG] ', {data} )
 
     player = data.player
     players = data.players

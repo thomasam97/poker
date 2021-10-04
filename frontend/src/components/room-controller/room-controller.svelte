@@ -22,11 +22,11 @@ import type { Player } from "../player-list/player";
 
 <div class="room-controller-root">
 {#if status === Status.Start}
-    <button on:click={onStartClick}> Start </button>
+    <button on:click={onStartClick}> Start Voting</button>
 {/if}
 
 {#if status === Status.InProgress}
-    <button on:click={onRevealClick} disabled={player.chosenCard === ""}> Reveal </button>
+    <button on:click={onRevealClick} disabled={player.chosenCard === ""}> Reveal Cards</button>
 {/if}
  
 {#if status === Status.Revealed}
@@ -42,6 +42,6 @@ import type { Player } from "../player-list/player";
     }
 
     button {
-        width: 6rem;
+        width: 10rem;
     }
 </style>

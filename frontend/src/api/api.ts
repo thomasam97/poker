@@ -88,7 +88,7 @@ class API {
     }
     
         public urlRoomAndPlayer(roomID: string, playerName: string): string {
-            const path = [this.url,"poker","room",roomID,playerName].join("/")
+            const path = [this.url,"room",roomID,playerName].join("/")
             const url = new URL(path)
             return url.toString()
         }

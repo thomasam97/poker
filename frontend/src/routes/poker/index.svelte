@@ -4,7 +4,10 @@
 
         return {
             status: 302,
-            redirect: "/room"
+            redirect: "/poker/room"
         };
     }
 </script>
+
+
+<h1> /Poker </h1>

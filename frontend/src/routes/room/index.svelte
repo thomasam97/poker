@@ -1,3 +1,6 @@
+<script context="module">
+	export const ssr = false;
+</script>
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { page } from "$app/stores";
@@ -35,7 +38,7 @@
 
 
 <svelte:head>
-	<title>Poker: Room Creation</title>
+	<title>Poker: Join Room</title>
 </svelte:head>
 
 
@@ -48,13 +51,14 @@
             </div>
 
             <div>
-                <label for="placyr-name" >Player Name</label>
-                <input id="player-name" bind:value={playerName} type="text" placeholder="Jane" />
+                <label for="player-name" >Player Name</label>
+                <!-- svelte-ignore a11y-autofocus -->
+                <input id="player-name" bind:value={playerName} type="text" placeholder="Jane" autofocus/>
             </div>
     
     
             <div class="button-container">
-                <button type="submit">Create</button>
+                <button type="submit">Join</button>
             </div>
         </form>
     </main>

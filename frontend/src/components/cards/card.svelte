@@ -13,8 +13,6 @@
         const horizontal = (pageX - offsetLeft) / clientWidth;
         const vertical = (pageY - offsetTop) / clientHeight;
 
-        // console.debug('[DEBUG] ', {clientY, offsetTop, clientHeight, clientY_offsettop:clientY - offsetTop, clientY_offsettop_clientheight:vertical} )
-
         const rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2);
         const rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
 
