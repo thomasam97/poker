@@ -1,6 +1,6 @@
+import { config } from "$lib/env"
 import type { HandlerFn } from "./state-store";
-
-const BASE_URL = "ws://localhost:7788"
+const BASE_URL = config.baseWS
 
 enum ActionTypes {
     StartVoting = "StartVoting",

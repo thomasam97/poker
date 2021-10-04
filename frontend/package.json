@@ -2,8 +2,8 @@
   "name": "053-poker",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "dev": "VITE_ENV=DEV svelte-kit dev",
+    "build": "VITE_ENV=PROD svelte-kit build",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",

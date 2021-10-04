@@ -2,6 +2,7 @@ package store
 
 import (
 	"log"
+	"sync"
 
 	"github.com/sirupsen/logrus"
 	"github.com/sprinteins/poker/src/x/types"
@@ -11,7 +12,8 @@ type roomID = string
 type rooms = map[roomID]*Room
 
 type Store struct {
-	rooms rooms
+	rooms   rooms
+	roomMtx sync.Mutex
 }
 
 func New() Store {
@@ -39,7 +41,9 @@ func (s *Store) CleanUpRoomIfNeeded(room *Room) {
 	}
 }
 
-func (s Store) EnsureRoom(roomID types.ID) *Room {
+func (s *Store) EnsureRoom(roomID types.ID) *Room {
+	s.roomMtx.Lock()
+	defer s.roomMtx.Unlock()
 	room, ok := s.rooms[roomID]
 	if !ok {
 		log.Printf("room not found createing, roomid=%s", roomID)
