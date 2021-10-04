@@ -20,36 +20,46 @@ function onSubmit(event: Event){
 }
 
 </script>
+<main>
+    <form on:submit={onSubmit}>
 
-<form on:submit={onSubmit}>
+        <div>
+            <label for="placyr-name" >Player Name</label>
+            <input id="player-name" bind:value={playerName} type="text" placeholder="Jane" />
+        </div>
 
-    <div>
-        <label for="placyr-name" >Player Name</label>
-        <input id="player-name" bind:value={playerName} type="text" placeholder="Jane" />
-    </div>
+        <div>
+            <label for="room-name">Room Name</label>
+            <input id="room-name" bind:value={roomName} type="text" placeholder="random room name" />
+        </div>
 
-    <div>
-        <label for="room-name">Room Name</label>
-        <input id="room-name" bind:value={roomName} type="text" placeholder="random room name" />
-    </div>
-
-    <div>
-        <label for="select-deck">Select Deck</label>
-        <select id="select-deck">
-            <option value="" selected></option>
-            <option value="simple">Simple</option>
-            <option value="fibonacchi">Fibonacchi</option>
-        </select>
-    </div>
-
-<div>
-    <button type="submit">Create</button>
-</div>
-</form>
+        <div class="button-container">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+</main>
 
 <style>
+    main {
+        display: flex;
+        justify-content: center;
+    }
     form {
         display: grid;
-        gap: 1rem;
+        gap:     1rem;
+        width:   auto;
     }
+
+    label {
+        display:        block;
+        font-family:    "SoinSansProHeadline";
+        text-transform: uppercase;
+        font-weight:    400;
+        color:          white;
+    }
+
+    .button-container {
+        text-align: right;
+    }
+
 </style>

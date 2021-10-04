@@ -4,15 +4,24 @@
     const THRESHOLD = 10;
     
     let card;
+
+
     function handleHover(e) {
-        const { clientX, clientY, currentTarget } = e;
+        const { pageX, pageY, currentTarget } = e;
         const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
         
-        const horizontal = (clientX - offsetLeft) / clientWidth;
-        const vertical = (clientY - offsetTop) / clientHeight;
+        const horizontal = (pageX - offsetLeft) / clientWidth;
+        const vertical = (pageY - offsetTop) / clientHeight;
+
+        // console.debug('[DEBUG] ', {clientY, offsetTop, clientHeight, clientY_offsettop:clientY - offsetTop, clientY_offsettop_clientheight:vertical} )
 
         const rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2);
         const rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
+
+        
+
+        // 
+
         card.style.transform = `
             perspective(${clientWidth}px) 
             rotateX(${rotateY}deg) 
@@ -42,9 +51,11 @@
 <style>
 
     .card {
+        --ratio: 5/3;
+        --width: 8rem;
         border: gray thin solid;
-        width:  12rem;
-        height: 20rem;
+        width:  var(--width);
+        height: calc( var(--width) * (var(--ratio)) );
         
         display:     grid;
         place-items: center;
@@ -63,7 +74,7 @@
     }
 
     .card:hover{
-        /* transition:         transform 0.0s; */
+        transition:         transform 0.1s;
         -webkit-box-shadow: 0px 0px 21px -2px #000000; 
         box-shadow:         0px 0px 21px -2px #000000;
     }
@@ -74,7 +85,7 @@
     }
 
     .content {
-        font-size:   5rem;
+        font-size:   4rem;
         font-family: "Helvetica Neue";
         font-weight: bold;
         position:    relative;

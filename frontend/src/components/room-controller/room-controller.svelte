@@ -1,8 +1,10 @@
 <script lang="ts">
     import { api } from "../../api"
     import { Status } from "../../api/state-store";
+import type { Player } from "../player-list/player";
 
     export let status = "";
+    export let player: Player
 
     function onStartClick(){
         api.startRoom()
@@ -24,7 +26,7 @@
 {/if}
 
 {#if status === Status.InProgress}
-    <button on:click={onRevealClick}> Reveal </button>
+    <button on:click={onRevealClick} disabled={player.chosenCard === ""}> Reveal </button>
 {/if}
  
 {#if status === Status.Revealed}
@@ -33,7 +35,13 @@
 </div>
 
 <style>
+
+    .room-controller-root{
+        display:         flex;
+        justify-content: center;
+    }
+
     button {
-        width: 5rem;
+        width: 6rem;
     }
 </style>

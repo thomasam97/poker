@@ -1,5 +1,4 @@
 import type { HandlerFn } from "./state-store";
-import { setState, subscribe } from "./state-store";
 
 const BASE_URL = "ws://localhost:7788"
 

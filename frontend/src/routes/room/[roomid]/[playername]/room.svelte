@@ -6,7 +6,8 @@ import { Cards } from "../../../../components/cards";
 import { PlayerList } from "../../../../components/player-list"
 import type { Player } from "../../../../components/player-list/player";
 import { RoomController } from "../../../../components/room-controller";
-import { RoomStatus } from "../../../../components/room-status"
+import { RoomStatus } from "../../../../components/room-status";
+import Header from "../../../../lib/header/Header.svelte"
 
 
 const { 
@@ -52,17 +53,18 @@ function isRevealed(roomStatus: Status): boolean {
     return roomStatus === Status.Revealed
 }
 
-// $: console.debug('[DEBUG] ', {roomStatus, player} )
-// $: console.debug('[DEBUG] ', {hasPlayerChosen: hasPlayerChosen(player), isGameRunnin:isGameRunnin(roomStatus)} )
-
 </script>
 
+<main>
 
 {#if player?.isAdmin}
-<RoomController status={roomStatus}/>
+    <RoomController status={roomStatus} player={player} />
+{:else}
+    <div class="ghost" />
 {/if}
 
-<RoomStatus status={roomStatus}/>
+
+<!-- <RoomStatus status={roomStatus}/> -->
 
 {#if hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
     <PlayerList players={players} isRevealed={isRevealed(roomStatus)} />
@@ -71,3 +73,16 @@ function isRevealed(roomStatus: Status): boolean {
 {#if !hasPlayerChosen(player) && isGameRunnin(roomStatus)}
     <Cards on:choose={(event) => onChoose(event.detail) }/>
 {/if}
+
+</main>
+
+<style>
+    main {
+        display: grid;
+        gap: 2rem;
+    }
+
+    .ghost {
+        height: 40px;
+    }
+</style>

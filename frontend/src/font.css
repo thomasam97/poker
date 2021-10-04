@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'SoinSansProBold';
+    src: url('/fonts/SoinSansProBold.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProBoldOblique';
+    src: url('/fonts/SoinSansProBoldOblique.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProHeadline';
+    src: url('/fonts/SoinSansProHeadline.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProLight';
+    src: url('/fonts/SoinSansProLight.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProLightOblique';
+    src: url('/fonts/SoinSansProLightOblique.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProMedium';
+    src: url('/fonts/SoinSansProMedium.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProMediumOblique';
+    src: url('/fonts/SoinSansProMediumOblique.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProMedium';
+    src: url('/fonts/SoinSansProMedium.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProMediumOblique';
+    src: url('/fonts/SoinSansProMediumOblique.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProOblique';
+    src: url('/fonts/SoinSansProOblique.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProRoman';
+    src: url('/fonts/SoinSansProRoman.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProThin';
+    src: url('/fonts/SoinSansProThin.otf');
+}
+
+@font-face {
+    font-family: 'SoinSansProThinOblique';
+    src: url('/fonts/SoinSansProThinOblique.otf');
+}

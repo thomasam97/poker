@@ -1,31 +1,34 @@
 @import '@fontsource/fira-mono';
+@import './font.css';
 
 :root {
-	font-family: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-family: "Helvetica Neue";
+
 	--font-mono: 'Fira Mono', monospace;
 	--pure-white: #ffffff;
 	--primary-color: #b9c6d2;
 	--secondary-color: #d0dde9;
 	--tertiary-color: #edf0f8;
-	--accent-color: #ff3e00;
+	--accent-color: #FF4B64;
 	--heading-color: rgba(0, 0, 0, 0.7);
 	--text-color: #444444;
 	--background-without-opacity: rgba(255, 255, 255, 0.7);
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
+	--color-red: #FF4B64;
 }
 
 body {
-	min-height: 100vh;
-	margin: 0;
-	background-color: var(--primary-color);
+	min-height:   100vh;
+	margin: 	  0;
+	background: #3e3e3e;
+	/* background-color: var(--primary-color);
 	background: linear-gradient(
 		180deg,
 		var(--primary-color) 0%,
 		var(--secondary-color) 10.45%,
 		var(--tertiary-color) 41.35%
-	);
+	); */
 }
 
 body::before {
@@ -36,11 +39,11 @@ body::before {
 	top: 0;
 	left: 10vw;
 	z-index: -1;
-	background: radial-gradient(
+	/* background: radial-gradient(
 		50% 50% at 50% 50%,
 		var(--pure-white) 0%,
 		rgba(255, 255, 255, 0) 100%
-	);
+	); */
 	opacity: 0.05;
 }
 
@@ -90,18 +93,45 @@ pre {
 	color: var(--text-color);
 }
 
-input,
 button {
-	font-size: inherit;
-	font-family: inherit;
+	font-size: 	    inherit;
+	font-family:    inherit;
+	outline: 	    2px solid var(--color-red);
+	background:     transparent;
+	border:         none;
+	padding:        0.5rem;
+	cursor:         pointer;
+	color: 		    white;
+	font-family:    "SoinSansProHeadline";
+	text-transform: uppercase;
+}
+
+button:hover:not(:disabled){
+	background: var(--color-red);
+	color:    black;
 }
 
 button:focus:not(:focus-visible) {
 	outline: none;
 }
 
-@media (min-width: 720px) {
-	h1 {
-		font-size: 2.4rem;
-	}
+button:disabled{
+	opacity: 50%;
+}
+
+
+input,
+select {
+	border: 	1px solid white;
+	padding: 	1rem;
+	background: transparent;
+	color:      white;
+}
+
+input:focus,
+input:active{
+	outline: none;
+	--shadow: 1px 0px 3px 1px white, inset 0px 0px 3px 1px white; ; 
+	-webkit-box-shadow: var(--shadow);
+	box-shadow: 		var(--shadow);
 }

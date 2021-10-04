@@ -3,34 +3,39 @@
 	import '../app.css';
 </script>
 
-<Header />
+<!-- <Header /> -->
 
 <main>
 	<slot />
 </main>
 
 <footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+	<p>Made by <a href="https://www.sprinteins.com">SprintEins</a> </p>
 </footer>
 
 <style>
 	main {
 		flex: 1;
 		display: flex;
-		flex-direction: column;
+		flex-direction:  column;
+		justify-content: flex-start;
 		padding: 1rem;
-		width: 100%;
-		max-width: 1024px;
-		margin: 0 auto;
+		/* width: 100%; */
+		/* max-width: 1024px; */
+		/* margin: 0 auto; */
 		box-sizing: border-box;
 	}
 
 	footer {
-		display: flex;
-		flex-direction: column;
+		display: 		 flex;
+		flex-direction:  column;
 		justify-content: center;
-		align-items: center;
-		padding: 40px;
+		align-items: 	 center;
+		padding: 		 40px;
+	}
+
+	footer p {
+		color: white;
 	}
 
 	footer a {

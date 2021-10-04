@@ -1,1 +1,5 @@
-<h1>Room ID</h1>
+<script>
+    import RoomID from"../index.svelte"
+</script>
+
+<RoomID />
