@@ -57,7 +57,7 @@ h1,
 h2,
 p {
 	font-weight: 400;
-	color: var(--heading-color);
+	color: white;
 }
 
 p {
@@ -74,8 +74,10 @@ a:hover {
 }
 
 h1 {
-	font-size: 2rem;
-	text-align: center;
+	
+	font-size:   4rem;
+	font-weight: 100;
+	text-align:  center;
 }
 
 h2 {

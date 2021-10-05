@@ -42,7 +42,9 @@
 </svelte:head>
 
 
-    <main>
+<h1>Scrum Poker</h1>
+<main>
+
         <form on:submit={onSubmit}>
     
             <div>
