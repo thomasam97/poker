@@ -137,3 +137,11 @@ input:active{
 	-webkit-box-shadow: var(--shadow);
 	box-shadow: 		var(--shadow);
 }
+
+label {
+	display:        block;
+	font-family:    "SoinSansProHeadline";
+	text-transform: uppercase;
+	font-weight:    400;
+	color:          white;
+}
