@@ -8,4 +8,12 @@ type Player struct {
 	IsAdmin    bool            `json:"isAdmin"`
 	ChosenCard string          `json:"chosenCard"`
 	Conn       *websocket.Conn `json:"-"`
+	Type       PlayerType      `json:"type"`
 }
+
+type PlayerType = string
+
+var (
+	PlayerTypePlayer    = "Player"
+	PlayerTypeSpectator = "Spectator"
+)

@@ -21,7 +21,7 @@ type Server struct {
 	actionMap ActionMap
 }
 
-func NewServer() Server {
+func NewServer() *Server {
 
 	srv := Server{
 		store:     store.New(),
@@ -32,8 +32,9 @@ func NewServer() Server {
 	srv.actionMap[store.TypeReveal] = srv.Reveal
 	srv.actionMap[store.TypeReset] = srv.Reset
 	srv.actionMap[store.TypeChoose] = srv.Choose
+	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
 
-	return srv
+	return &srv
 }
 
 func (s *Server) Run() {
@@ -59,7 +60,7 @@ var wsupgrader = websocket.Upgrader{
 	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
-func (s Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Context) {
+func (s *Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Context) {
 	conn, err := wsupgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Printf("Failed to set websocket upgrade: %+v", err)
@@ -75,6 +76,7 @@ func (s Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Context
 		ID:   uuid.NewString(),
 		Name: playername,
 		Conn: conn,
+		Type: store.PlayerTypePlayer,
 	}
 
 	s.store.AddPlayer(roomID, player)
@@ -82,7 +84,7 @@ func (s Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Context
 	s.store.RemovePlayer(roomID, player)
 }
 
-func (s Server) ListenUntilDesctonnects(
+func (s *Server) ListenUntilDesctonnects(
 	conn *websocket.Conn,
 	roomID types.ID,
 	player store.Player,
@@ -112,19 +114,19 @@ func (s Server) ListenUntilDesctonnects(
 	}
 }
 
-func (s Server) StartVoting(roomID types.ID, _ types.ID, _ []byte) {
+func (s *Server) StartVoting(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.StartVoting(roomID)
 }
 
-func (s Server) Reveal(roomID types.ID, _ types.ID, _ []byte) {
+func (s *Server) Reveal(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.Reveal(roomID)
 }
 
-func (s Server) Reset(roomID types.ID, _ types.ID, _ []byte) {
+func (s *Server) Reset(roomID types.ID, _ types.ID, _ []byte) {
 	s.store.Reset(roomID)
 }
 
-func (s Server) Choose(roomID types.ID, playerID types.ID, payload []byte) {
+func (s *Server) Choose(roomID types.ID, playerID types.ID, payload []byte) {
 	chooseAction := ActionChoose{}
 	err := json.Unmarshal(payload, &chooseAction)
 	if err != nil {
@@ -138,5 +140,21 @@ func (s Server) Choose(roomID types.ID, playerID types.ID, payload []byte) {
 }
 
 type ActionChoose struct {
+	Payload string `json:"payload"`
+}
+
+func (s *Server) SetPlayerType(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetPlayerType{}
+	err := json.Unmarshal(payload, &action)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%s", payload),
+		}).Error("could not parse set-player-type action")
+	}
+
+	s.store.SetPlayerType(roomID, playerID, action.Payload)
+}
+
+type ActionSetPlayerType struct {
 	Payload string `json:"payload"`
 }

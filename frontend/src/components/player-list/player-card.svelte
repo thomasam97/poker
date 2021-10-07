@@ -1,13 +1,17 @@
 <script lang="ts">
-    import type { Player } from "./player";
+    import type { Player } from "../../api";
     import CardBG from "./card-bg.png"
 
     export let player: Player;
+    export let isCurrentPlayer: boolean;
     export let isRevealed: boolean = false;
     $: playerHasChoosen = player.chosenCard !== ""
 </script>
 
-<div class="player-card" class:playerHasChoosen>
+<div 
+    class="player-card" 
+    class:playerHasChoosen
+>
     <div class="admin">
         {#if player.isAdmin}
             👑
@@ -17,12 +21,17 @@
         {player.name}
         
     </div>
-    <div class="card flip-card" class:revealed={isRevealed}>
+    <div 
+        class="card flip-card" 
+        class:revealed={isRevealed} 
+    >
         <div class="flip-card-inner">
-            <div class="flip-card-front" >
+            <div class="flip-card-front" 
+            class:isCurrentPlayer >
                 <img src={CardBG} class="card-image" alt="SprintEins Logo small"/>
             </div>
-            <div class="flip-card-back" >
+            <div class="flip-card-back"  
+            class:isCurrentPlayer>
                 <div class="content">
                     {player.chosenCard}
                 </div>
@@ -32,6 +41,11 @@
 </div>
 
 <style>
+    .isCurrentPlayer{
+        --shadow: inset 0px 0px 3px 1px var(--color-red);
+        -webkit-box-shadow: var(--shadow);
+	    box-shadow: 		var(--shadow);
+    }
     .player-card {
         font-family: "Helvetica Neue";
         transition:   all 0.3s ease-in-out;

@@ -1,12 +1,18 @@
 import { config } from "$lib/env"
-import type { HandlerFn } from "./state-store";
+import type { HandlerFn, PlayerType } from "./state-store";
 const BASE_URL = config.baseWS
 
 enum ActionTypes {
-    StartVoting = "StartVoting",
-    Reveal      = "Reveal",
-    Reset       = "Reset",
-    Choose      = "Choose" 
+    StartVoting   = "StartVoting",
+    Reveal        = "Reveal",
+    Reset         = "Reset",
+    Choose        = "Choose",
+    SetPlayerType = "SetPlayerType",
+}
+
+export interface Message<T> {
+    type:     ActionTypes,
+    payload?: T, 
 }
 
 class API {
@@ -16,6 +22,13 @@ class API {
         
     private conn: WebSocket;
 
+    public setPlayerType(type: PlayerType){
+        const msg: Message<PlayerType> = {
+            type:     ActionTypes.SetPlayerType,
+            payload: type,
+        }
+        this.send(msg);
+    }
 
     public startRoom() {
         const msg = {
@@ -46,7 +59,7 @@ class API {
         this.send(msg)
     }
 
-    private send(msg: unknown){
+    private send<T>(msg: Message<T>){
         if(!this.conn){ return }
 
         const payload = JSON.stringify(msg)

@@ -106,3 +106,12 @@ func (s *Store) Choose(roomID types.ID, playerID types.ID, card string) {
 
 	room.Choose(playerID, card)
 }
+
+func (s *Store) SetPlayerType(roomID types.ID, playerID types.ID, playerType PlayerType) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.SetPlayerType(playerID, playerType)
+}

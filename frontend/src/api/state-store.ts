@@ -13,9 +13,17 @@ export interface State {
     status?:  Status
 }
 
-interface Player {
-    id:   string
-    name: string
+export interface Player {
+    id:         string
+    name:       string
+    isAdmin:    boolean
+    chosenCard: string
+    type:       PlayerType
+}
+
+export enum PlayerType {
+    Spectator = "Spectator",
+    Player    = "Player", 
 }
 
 const initalState: State = {

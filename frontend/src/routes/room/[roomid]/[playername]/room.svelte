@@ -1,10 +1,9 @@
 <script lang="ts">
 import { page } from "$app/stores";
 import { api } from "../../../../api"
-import { Status } from "../../../../api/state-store";
+import { Player, PlayerType, Status } from "../../../../api/state-store";
 import { Cards } from "../../../../components/cards";
 import { PlayerList } from "../../../../components/player-list"
-import type { Player } from "../../../../components/player-list/player";
 import { RoomController } from "../../../../components/room-controller";
 import { RoomStatus } from "../../../../components/room-status";
 import Header from "../../../../lib/header/Header.svelte"
@@ -52,24 +51,28 @@ function isRevealed(roomStatus: Status): boolean {
     return roomStatus === Status.Revealed
 }
 
+function isPlayerSpectator( player: Player): boolean{
+    return player && player.type === PlayerType.Spectator
+}
+
 </script>
 
 <main>
 
-{#if player?.isAdmin}
+<!-- {#if player?.isAdmin} -->
     <RoomController status={roomStatus} player={player} />
-{:else}
-    <div class="ghost" />
-{/if}
+<!-- {:else} -->
+    <!-- <div class="ghost" /> -->
+<!-- {/if} -->
 
 
 <!-- <RoomStatus status={roomStatus}/> -->
 
-{#if hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
-    <PlayerList players={players} isRevealed={isRevealed(roomStatus)} />
+{#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
+    <PlayerList players={players} currentPlayer={player} isRevealed={isRevealed(roomStatus)} />
 {/if}
 
-{#if !hasPlayerChosen(player) && isGameRunnin(roomStatus)}
+{#if !isPlayerSpectator(player) && ( !hasPlayerChosen(player) && isGameRunnin(roomStatus) )}
     <Cards on:choose={(event) => onChoose(event.detail) }/>
 {/if}
 

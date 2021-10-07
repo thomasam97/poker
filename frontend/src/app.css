@@ -98,9 +98,9 @@ pre {
 button {
 	font-size: 	    inherit;
 	font-family:    inherit;
-	outline: 	    2px solid var(--color-red);
+	border: 	    2px solid var(--color-red);
 	background:     transparent;
-	border:         none;
+	/* border:         none; */
 	padding:        0.5rem;
 	cursor:         pointer;
 	color: 		    white;
@@ -114,7 +114,7 @@ button:hover:not(:disabled){
 }
 
 button:focus:not(:focus-visible) {
-	outline: none;
+	/* border: none; */
 }
 
 button:disabled{
@@ -133,7 +133,7 @@ select {
 input:focus,
 input:active{
 	outline: none;
-	--shadow: 1px 0px 3px 1px white, inset 0px 0px 3px 1px white; ; 
+	--shadow: 1px 0px 3px 1px white, inset 0px 0px 3px 1px white; 
 	-webkit-box-shadow: var(--shadow);
 	box-shadow: 		var(--shadow);
 }

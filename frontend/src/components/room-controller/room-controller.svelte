@@ -1,7 +1,8 @@
 <script lang="ts">
     import { api } from "../../api"
-    import { Status } from "../../api/state-store";
-import type { Player } from "../player-list/player";
+    import { PlayerType, Status } from "../../api/state-store";
+    import type { Player } from "../../api";
+    import { ButtonToggle } from "$lib/button-toggle"
 
     export let status = "";
     export let player: Player
@@ -16,29 +17,57 @@ import type { Player } from "../player-list/player";
 
     function onResetClick(){
         api.resetRoom()
+        api.startRoom()
     }
+
+    const playerTypes = [
+        PlayerType.Player,
+        PlayerType.Spectator,
+    ]
+
+
+    function onActivate(event: CustomEvent<number>){
+        const typeIndex = event.detail;
+        const type = playerTypes[typeIndex]
+        api.setPlayerType(type)
+    }
+
+    function isRevealDisabled(player: Player): boolean {
+        return player.type !== PlayerType.Spectator && player.chosenCard === "" 
+    }
+
+    $: typeIndex = playerTypes.indexOf(player?.type)
 
 </script>
 
-<div class="room-controller-root">
-{#if status === Status.Start}
-    <button on:click={onStartClick}> Start Voting</button>
+<room-controller>
+{#if player?.isAdmin }
+    {#if status === Status.Start}
+        <button on:click={onStartClick}> Start Voting</button>
+    {/if}
+
+    {#if status === Status.InProgress}
+        <button on:click={onRevealClick} disabled={isRevealDisabled(player)}> Reveal Cards</button>
+    {/if}
+    
+    {#if status === Status.Revealed}
+        <button on:click={onResetClick}> Start Voting </button>
+    {/if}
 {/if}
 
-{#if status === Status.InProgress}
-    <button on:click={onRevealClick} disabled={player.chosenCard === ""}> Reveal Cards</button>
-{/if}
- 
-{#if status === Status.Revealed}
-    <button on:click={onResetClick}> Reset </button>
-{/if}
-</div>
+    <ButtonToggle 
+        labels={playerTypes} 
+        on:activate={onActivate} 
+        activeIndex={typeIndex}
+    />
+</room-controller>
 
 <style>
 
-    .room-controller-root{
+    room-controller{
         display:         flex;
         justify-content: center;
+        gap:             1rem;
     }
 
     button {

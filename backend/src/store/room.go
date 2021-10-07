@@ -130,3 +130,19 @@ func (r *Room) Choose(playerID types.ID, card string) {
 	player.ChosenCard = card
 	r.EmitState()
 }
+
+func (r *Room) SetPlayerType(playerID types.ID, playerType PlayerType) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	player := r.findPlayerByID(playerID)
+	if player == nil {
+		return
+	}
+	log.WithFields(log.Fields{
+		"playerType": playerType,
+		"playerID":   playerID,
+		"roomID":     r.id,
+	}).Info("set player type")
+	player.Type = playerType
+	r.EmitState()
+}
