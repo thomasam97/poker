@@ -12,8 +12,8 @@ build:
 	@yarn install
 	@yarn build
 
-publish: #build
-	rsync -v -r --rsync-path="sudo /usr/bin/rsync" ./build/* matrix:/var/www/poker/
+publish: build
+	vercel
 
 preview:
 	http-server ./build -d -i 

@@ -3,9 +3,11 @@
     import { PlayerType, Status } from "../../api/state-store";
     import type { Player } from "../../api";
     import { ButtonToggle } from "$lib/button-toggle"
+import RoomLink from "./room-link.svelte";
 
     export let status = "";
     export let player: Player
+    export let roomID = "";
 
     function onStartClick(){
         api.startRoom()
@@ -38,9 +40,17 @@
 
     $: typeIndex = playerTypes.indexOf(player?.type)
 
+    $: roomLink = `${window.location.origin}/room/${roomID}`
+    function onRoomLinkClick(event: MouseEvent){
+        event.preventDefault()
+        navigator.clipboard.writeText(roomLink);
+    }
+
 </script>
 
 <room-controller>
+    <RoomLink link={roomLink} />
+
 {#if player?.isAdmin }
     {#if status === Status.Start}
         <button on:click={onStartClick}> Start Voting</button>

@@ -36,7 +36,7 @@ function hasPlayerChosen(player: Player): boolean {
         return false
     }
 
-    return player.chosenCard !== ""
+    return player.chosenCard !== "" 
 }
 
 function isGameRunnin(roomStatus: Status): boolean {
@@ -60,7 +60,7 @@ function isPlayerSpectator( player: Player): boolean{
 <main>
 
 <!-- {#if player?.isAdmin} -->
-    <RoomController status={roomStatus} player={player} />
+    <RoomController status={roomStatus} player={player} roomID={roomID} />
 <!-- {:else} -->
     <!-- <div class="ghost" /> -->
 <!-- {/if} -->
