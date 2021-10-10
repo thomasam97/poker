@@ -10,5 +10,8 @@ run:
 build:
 	env GOOS=linux GOARCH=amd64 go build -o poker ./src/
 
+buildandrun:
+	go build -o poker ./src/ && ./poker
+
 publish: build
 	rsync --rsync-path="sudo /usr/bin/rsync" ./poker matrix:/opt/poker
