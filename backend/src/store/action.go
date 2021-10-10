@@ -11,4 +11,5 @@ const (
 	TypeReset         = "Reset"
 	TypeChoose        = "Choose"
 	TypeSetPlayerType = "SetPlayerType"
+	TypeSetCards      = "SetCards"
 )

@@ -19,7 +19,6 @@
     </div>
     <div class="player">
         {player.name}
-        
     </div>
     <div 
         class="card flip-card" 
@@ -65,14 +64,15 @@
     }
 
     .content {
-        font-size:   5rem;
-        font-weight: bold;
-        position:    relative;
-        z-index:     1;
-        width:       100%;
-        height:      100%;
-        display:     grid;
-        place-items: center;
+        font-size:      5rem;
+        font-weight:    bold;
+        position:       relative;
+        z-index:        1;
+        width:          100%;
+        height:         100%;
+        display:        grid;
+        place-items:    center;
+        text-transform: uppercase;
         
     }
 

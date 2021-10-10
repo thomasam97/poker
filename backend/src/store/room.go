@@ -13,13 +13,17 @@ type Room struct {
 	players []*Player
 	mtx     sync.Mutex
 	status  Status
+	cards   Cards
 }
+
+var defaultCards = cardSets[0]
 
 func NewRoom(id types.ID) Room {
 	return Room{
 		id:      id,
 		players: make([]*Player, 0),
 		status:  StatusStart,
+		cards:   defaultCards.Cards,
 	}
 }
 
@@ -66,6 +70,8 @@ type State struct {
 	Player  *Player   `json:"player"`
 	Players []*Player `json:"players"`
 	Status  Status    `json:"status"`
+	Cards   Cards     `json:"cards"`
+	Sets    []Set     `json:"sets"`
 }
 
 func (r *Room) EmitState() {
@@ -80,6 +86,8 @@ func (r *Room) EmitState() {
 			Player:  player,
 			Players: r.players,
 			Status:  r.status,
+			Cards:   r.cards,
+			Sets:    cardSets,
 		}
 		payload, err := json.Marshal(state)
 		if err != nil {
@@ -144,5 +152,21 @@ func (r *Room) SetPlayerType(playerID types.ID, playerType PlayerType) {
 		"roomID":     r.id,
 	}).Info("set player type")
 	player.Type = playerType
+	r.EmitState()
+}
+
+func (r *Room) SetCards(playerID types.ID, cards Cards) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	player := r.findPlayerByID(playerID)
+	if player == nil {
+		return
+	}
+	log.WithFields(log.Fields{
+		"cards":    cards,
+		"playerID": playerID,
+		"roomID":   r.id,
+	}).Info("set player type")
+	r.cards = cards
 	r.EmitState()
 }

@@ -137,3 +137,12 @@ input:active{
 	-webkit-box-shadow: var(--shadow);
 	box-shadow: 		var(--shadow);
 }
+
+select {
+	border: 2px solid var(--color-red);
+}
+
+
+select:disabled{
+	opacity: 50%;
+}

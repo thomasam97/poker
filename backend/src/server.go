@@ -33,6 +33,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeReset] = srv.Reset
 	srv.actionMap[store.TypeChoose] = srv.Choose
 	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
+	srv.actionMap[store.TypeSetCards] = srv.SetCards
 
 	return &srv
 }
@@ -157,4 +158,20 @@ func (s *Server) SetPlayerType(roomID types.ID, playerID types.ID, payload []byt
 
 type ActionSetPlayerType struct {
 	Payload string `json:"payload"`
+}
+
+func (s *Server) SetCards(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetCards{}
+	err := json.Unmarshal(payload, &action)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%s", payload),
+		}).Error("could not parse set-cards action")
+	}
+
+	s.store.SetCards(roomID, playerID, action.Payload)
+}
+
+type ActionSetCards struct {
+	Payload []string `json:"payload"`
 }

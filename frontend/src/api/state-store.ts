@@ -7,10 +7,18 @@ export enum Status {
     Revealed   = "Revealed",
 }
 
-export interface State {
+export type Cards = string[]
+export type Set = {
+    label: string
+    cards: Cards
+}
+
+export type State = {
     player?:  Player
     players?: Player[]
     status?:  Status
+    cards:    Cards
+    sets:     Set[]
 }
 
 export interface Player {
@@ -28,7 +36,9 @@ export enum PlayerType {
 
 const initalState: State = {
     players: [],
-    status: Status.Start,
+    status:  Status.Start,
+    cards:   [],
+    sets:    []
 }
 
 const state = writable(initalState)

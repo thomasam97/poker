@@ -25,11 +25,13 @@
 <style>
     button-toggle {
         margin:  0;
-        padding: 0
+        padding: 0;
+        height:  52px
     }
 
     button {
         margin: 0;
+        height: 100%;
     }
             
     button + button {

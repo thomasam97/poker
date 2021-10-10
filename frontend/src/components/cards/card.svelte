@@ -91,6 +91,7 @@
         /* transition:  transform 0.1s ease; */
         transition:  text-shadow;
         /* text-shadow: 0px 0px 8px #FFFFFF; */
+        text-transform: uppercase;
     }
 
     .card::before {

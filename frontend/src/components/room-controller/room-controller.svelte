@@ -1,13 +1,14 @@
 <script lang="ts">
     import { api } from "../../api"
-    import { PlayerType, Status } from "../../api/state-store";
+    import { PlayerType, Set, Status } from "../../api/state-store";
     import type { Player } from "../../api";
     import { ButtonToggle } from "$lib/button-toggle"
-import RoomLink from "./room-link.svelte";
+    import RoomLink from "./room-link.svelte";
 
     export let status = "";
     export let player: Player
     export let roomID = "";
+    export let sets: Set[] = [];
 
     function onStartClick(){
         api.startRoom()
@@ -34,17 +35,20 @@ import RoomLink from "./room-link.svelte";
         api.setPlayerType(type)
     }
 
+    function onCardChange(event: Event){
+        const selectEl = event.target as HTMLSelectElement
+        const index = selectEl.value
+        const cards = sets[index].cards
+        api.setCards(cards)
+    }
+
     function isRevealDisabled(player: Player): boolean {
         return player.type !== PlayerType.Spectator && player.chosenCard === "" 
     }
 
     $: typeIndex = playerTypes.indexOf(player?.type)
-
     $: roomLink = `${window.location.origin}/room/${roomID}`
-    function onRoomLinkClick(event: MouseEvent){
-        event.preventDefault()
-        navigator.clipboard.writeText(roomLink);
-    }
+    
 
 </script>
 
@@ -63,6 +67,14 @@ import RoomLink from "./room-link.svelte";
     {#if status === Status.Revealed}
         <button on:click={onResetClick}> Start Voting </button>
     {/if}
+    
+    <select disabled={status === Status.InProgress} on:change={onCardChange}>
+        {#each sets as set, si}
+            <option value={si}>{set.label}: {set.cards}</option>
+        {/each}
+    </select>
+
+    
 {/if}
 
     <ButtonToggle 
@@ -82,5 +94,10 @@ import RoomLink from "./room-link.svelte";
 
     button {
         width: 10rem;
+    }
+
+    select{
+        width:         200px;
+        text-overflow: ellipsis;
     }
 </style>

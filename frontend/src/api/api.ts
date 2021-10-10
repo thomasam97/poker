@@ -8,6 +8,7 @@ enum ActionTypes {
     Reset         = "Reset",
     Choose        = "Choose",
     SetPlayerType = "SetPlayerType",
+    SetCards      = "SetCards",
 }
 
 export interface Message<T> {
@@ -55,6 +56,14 @@ class API {
         const msg = {
             type: ActionTypes.Choose,
             payload: card,
+        }
+        this.send(msg)
+    }
+
+    public setCards(cards: string[]) {
+        const msg = {
+            type: ActionTypes.SetCards,
+            payload: cards,
         }
         this.send(msg)
     }

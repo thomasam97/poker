@@ -115,3 +115,12 @@ func (s *Store) SetPlayerType(roomID types.ID, playerID types.ID, playerType Pla
 
 	room.SetPlayerType(playerID, playerType)
 }
+
+func (s *Store) SetCards(roomID types.ID, playerID types.ID, cards Cards) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.SetCards(playerID, cards)
+}

@@ -4,20 +4,7 @@
 
     const dispatch = createEventDispatcher();
 
-
-    let cards = [
-        "1",
-        "2",
-        "3",
-        "5",
-        "8",
-        "13",
-        "20",
-        "40",
-        "100",
-        "∞",
-        "?"
-    ]
+    export let cards = []
 </script>
 
 
@@ -35,10 +22,11 @@
         margin:          0;
         padding:         0;
         
-        display:        flex;
-        flex-direction: row;
-        flex-wrap:      wrap;
-        gap:            1rem;
+        display:         flex;
+        flex-direction:  row;
+        flex-wrap:       wrap;
+        gap:             1rem;
+        justify-content: center;
     }
 
    
