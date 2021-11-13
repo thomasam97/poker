@@ -5,5 +5,4 @@
     import RoomID from"../index.svelte"
 </script>
 
-<!-- <h1>ROOMID</h1> -->
 <RoomID />

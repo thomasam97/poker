@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<!-- <script context="module" lang="ts">
 	export const prerender = true;
 	export async function load() {
 
@@ -7,7 +7,7 @@
             redirect: "/poker/room"
         };
     }
-</script>
+</script> -->
 
 
 <h1> /Poker </h1>

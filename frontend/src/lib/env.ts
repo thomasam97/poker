@@ -1,14 +1,14 @@
 const env = import.meta.env.VITE_ENV as string
 
 const configProd = {
-    baseWS: "wss://matrix.sprinteins.com/poker/api",
+    baseWS: "wss://scrum-poker.sprinteins.com/api",
 }
 
 type Config = typeof configProd;
 
 const configDev: Config = {
     ...configProd,
-    baseWS: "ws://localhost:7788/poker/api",
+    baseWS: "ws://localhost:7788/api",
 }
 
 const configMap: {[key: string]: Config} = {
