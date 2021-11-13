@@ -1,0 +1,25 @@
+# location: /lib/systemd/system/poker.service
+[Unit]
+Description=Poker API for the Scrum Poker App
+#ConditionPathExists=/home/ubuntu/work/src/sleepservice/sleepservice
+After=network.target
+
+[Service]
+Type=simple
+User=se-service
+#Group=se-service
+#LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+WorkingDirectory=/home/se-service/opt/poker/backend
+ExecStart=/bin/bash /home/se-service/opt/poker/backend/start.sh
+
+NoNewPrivileges=true
+
+
+[Install]
+WantedBy=multi-user.target
+#WantedBy=default.target
