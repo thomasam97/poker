@@ -13,7 +13,8 @@ build:
 	@yarn build
 
 publish: build
-	vercel
+	zip -r build.zip ./build/*
+	scp build.zip poker:~/opt/poker
 
 preview:
 	http-server ./build -d -i 

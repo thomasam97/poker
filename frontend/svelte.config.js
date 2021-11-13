@@ -1,7 +1,5 @@
 import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
-// import vercel from '@sveltejs/adapter-vercel';
-// import adapter from '@sveltejs/adapter-node';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -15,7 +13,6 @@ const config = {
 		},
 		target: '#svelte',
 		ssr: true,
-		// adapter: vercel(),
 		adapter: adapter({
 			// default options are shown
 			pages: 'build',
