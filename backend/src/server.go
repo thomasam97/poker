@@ -41,14 +41,7 @@ func NewServer() *Server {
 func (s *Server) Run() {
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		resp := TestResp{
-			MSG: "hallo",
-		}
-		c.JSON(200, resp)
-	})
-
-	r.GET("/poker/api/room/:roomid/:playername", func(c *gin.Context) {
+	r.GET("/api/room/:roomid/:playername", func(c *gin.Context) {
 		s.wshandler(c.Writer, c.Request, c)
 	})
 
