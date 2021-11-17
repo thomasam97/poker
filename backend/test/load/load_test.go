@@ -70,7 +70,7 @@ func user(ui int, connect, send chan struct{}) (waiting, finished chan struct{})
 	waiting = make(chan struct{}, 1)
 	go func(ui int, connect, send, finished, waiting chan struct{}) {
 		// socketURL := fmt.Sprintf("ws://localhost:7788/poker/api/room/test-room/user-%d", ui)
-		socketURL := fmt.Sprintf("wss://matrix.sprinteins.com/poker/api/room/test-room/user-%d", ui)
+		socketURL := fmt.Sprintf("wss://scrum-poker.sprinteins.com/api/room/test-room/user-%d", ui)
 		waiting <- struct{}{}
 		<-connect
 		conn, _, err := websocket.DefaultDialer.Dial(socketURL, nil)

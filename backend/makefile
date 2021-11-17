@@ -18,6 +18,4 @@ buildandrun: buildlocal
 
 
 publish: build
-	# rsync --rsync-path="sudo /usr/bin/rsync" ./poker matrix:/opt/poker
-	# rsync ./poker poker:~/poker
 	scp ./poker poker:~/poker
