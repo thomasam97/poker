@@ -1,7 +1,7 @@
 # location: /lib/systemd/system/poker.service
+
 [Unit]
 Description=Poker API for the Scrum Poker App
-#ConditionPathExists=/home/ubuntu/work/src/sleepservice/sleepservice
 After=network.target
 
 [Service]
@@ -22,4 +22,3 @@ NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
-#WantedBy=default.target
