@@ -93,27 +93,26 @@ class API {
         }
         
         conn.onopen = (e) => {
-            console.debug("[open] Connection established");
+            console.info("[open] Connection established");
         };
         
         conn.onmessage = (event) => {
-            console.debug(`[message] Data received from server: ${event.data}`);
             const parsedData = JSON.parse(event.data)
             handlerFn(parsedData)
         };
         
         conn.onclose = (event) => {
             if (event.wasClean) {
-                console.debug(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+                console.info(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
             } else {
                 // e.g. server process killed or network down
                 // event.code is usually 1006 in this case
-                console.debug('[close] Connection died');
+                console.info('[close] Connection died');
             }
         };
         
         conn.onerror = (error) =>  {
-            console.debug(`[error] ${JSON.stringify(error)}`);
+            console.error(`[error] ${JSON.stringify(error)}`);
         };
         
     }
