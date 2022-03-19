@@ -12,4 +12,5 @@ const (
 	TypeChoose        = "Choose"
 	TypeSetPlayerType = "SetPlayerType"
 	TypeSetCards      = "SetCards"
+	TypeSetAutoReveal = "SetAutoReveal"
 )

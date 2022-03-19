@@ -18,6 +18,7 @@ let players = []
 let roomStatus: Status = Status.Init
 let cards: TypeCards = []
 let sets: Set[] = []
+let autoReveal: boolean = false
 
 api.register(roomID, playerName, (data) => {
 
@@ -26,6 +27,7 @@ api.register(roomID, playerName, (data) => {
     roomStatus = data.status
     cards = data.cards
     sets = data.sets
+    autoReveal = data.autoReveal
 
 })
 
@@ -61,14 +63,15 @@ function isPlayerSpectator( player: Player): boolean{
 
 <main>
 
-<!-- {#if player?.isAdmin} -->
-    <RoomController status={roomStatus} player={player} roomID={roomID} sets={sets} />
-<!-- {:else} -->
-    <!-- <div class="ghost" /> -->
-<!-- {/if} -->
+    <RoomController
+        status={roomStatus} 
+        player={player} 
+        roomID={roomID} 
+        sets={sets} 
+        autoReveal={autoReveal}    
+    />
 
 
-<!-- <RoomStatus status={roomStatus}/> -->
 
 {#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
     <PlayerList players={players} currentPlayer={player} isRevealed={isRevealed(roomStatus)} />

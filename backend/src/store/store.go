@@ -105,6 +105,7 @@ func (s *Store) Choose(roomID types.ID, playerID types.ID, card string) {
 	}
 
 	room.Choose(playerID, card)
+	room.AutoRevealIfCan()
 }
 
 func (s *Store) SetPlayerType(roomID types.ID, playerID types.ID, playerType PlayerType) {
@@ -123,4 +124,15 @@ func (s *Store) SetCards(roomID types.ID, playerID types.ID, cards Cards) {
 	}
 
 	room.SetCards(playerID, cards)
+}
+
+// s.store.SetAutoReveal(roomID, action.Payload)
+
+func (s *Store) SetAutoReveal(roomID types.ID, autoReveal bool) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.SetAutoReveal(autoReveal)
 }

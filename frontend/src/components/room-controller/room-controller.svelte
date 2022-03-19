@@ -4,11 +4,13 @@
     import type { Player } from "../../api";
     import { ButtonToggle } from "$lib/button-toggle"
     import RoomLink from "./room-link.svelte";
+    import AutoReveal from "./auto-reveal.svelte";
 
     export let status = "";
     export let player: Player
     export let roomID = "";
     export let sets: Set[] = [];
+    export let autoReveal: boolean = false;
 
     function onStartClick(){
         api.startRoom()
@@ -40,6 +42,13 @@
         const index = selectEl.value
         const cards = sets[index].cards
         api.setCards(cards)
+    }
+
+    function onAutoRevealChange(event: Event){
+        const inputEl = event.target as HTMLInputElement
+        const autoReveal = inputEl.checked as boolean
+        console.debug('[DEBUG] ', {autoReveal} )
+        api.setAutoReveal(autoReveal)
     }
 
     function isRevealDisabled(player: Player): boolean {
@@ -74,7 +83,10 @@
         {/each}
     </select>
 
-    
+    <AutoReveal
+        value={autoReveal}
+        on:change={onAutoRevealChange}     
+    />
 {/if}
 
     <ButtonToggle 
@@ -82,6 +94,7 @@
         on:activate={onActivate} 
         activeIndex={typeIndex}
     />
+
 </room-controller>
 
 <style>

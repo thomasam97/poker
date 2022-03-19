@@ -9,21 +9,23 @@ import (
 )
 
 type Room struct {
-	id      types.ID
-	players []*Player
-	mtx     sync.Mutex
-	status  Status
-	cards   Cards
+	id         types.ID
+	players    []*Player
+	mtx        sync.Mutex
+	status     Status
+	cards      Cards
+	autoReveal bool
 }
 
 var defaultCards = cardSets[0]
 
 func NewRoom(id types.ID) Room {
 	return Room{
-		id:      id,
-		players: make([]*Player, 0),
-		status:  StatusStart,
-		cards:   defaultCards.Cards,
+		id:         id,
+		players:    make([]*Player, 0),
+		status:     StatusStart,
+		cards:      defaultCards.Cards,
+		autoReveal: false,
 	}
 }
 
@@ -67,11 +69,12 @@ func (r *Room) RemovePlayer(p Player) {
 }
 
 type State struct {
-	Player  *Player   `json:"player"`
-	Players []*Player `json:"players"`
-	Status  Status    `json:"status"`
-	Cards   Cards     `json:"cards"`
-	Sets    []Set     `json:"sets"`
+	Player     *Player   `json:"player"`
+	Players    []*Player `json:"players"`
+	Status     Status    `json:"status"`
+	Cards      Cards     `json:"cards"`
+	Sets       []Set     `json:"sets"`
+	AutoReveal bool      `json:"autoReveal"`
 }
 
 func (r *Room) EmitState() {
@@ -83,11 +86,12 @@ func (r *Room) EmitState() {
 	for _, player := range r.players {
 
 		state := State{
-			Player:  player,
-			Players: r.players,
-			Status:  r.status,
-			Cards:   r.cards,
-			Sets:    cardSets,
+			Player:     player,
+			Players:    r.players,
+			Status:     r.status,
+			Cards:      r.cards,
+			Sets:       cardSets,
+			AutoReveal: r.autoReveal,
 		}
 		payload, err := json.Marshal(state)
 		if err != nil {
@@ -109,6 +113,10 @@ func (r *Room) StartVoting() {
 func (r *Room) Reveal() {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
+
+	if r.status == StatusRevealed {
+		return
+	}
 	r.status = StatusRevealed
 	r.EmitState()
 }
@@ -137,6 +145,22 @@ func (r *Room) Choose(playerID types.ID, card string) {
 	}).Info("choosing card")
 	player.ChosenCard = card
 	r.EmitState()
+}
+
+func (r *Room) AutoRevealIfCan() {
+	if r.autoReveal && r.HasEverybodyChosen() {
+		r.Reveal()
+	}
+}
+
+func (r *Room) HasEverybodyChosen() bool {
+	for _, player := range r.players {
+		if player.ChosenCard == "" {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (r *Room) SetPlayerType(playerID types.ID, playerType PlayerType) {
@@ -168,5 +192,16 @@ func (r *Room) SetCards(playerID types.ID, cards Cards) {
 		"roomID":   r.id,
 	}).Info("set player type")
 	r.cards = cards
+	r.EmitState()
+}
+
+func (r *Room) SetAutoReveal(autoReveal bool) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	log.WithFields(log.Fields{
+		"autoReveal": autoReveal,
+		"roomID":     r.id,
+	}).Info("set auto reveal")
+	r.autoReveal = autoReveal
 	r.EmitState()
 }

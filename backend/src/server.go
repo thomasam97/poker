@@ -34,6 +34,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeChoose] = srv.Choose
 	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
 	srv.actionMap[store.TypeSetCards] = srv.SetCards
+	srv.actionMap[store.TypeSetAutoReveal] = srv.SetAutoReveal
 
 	return &srv
 }
@@ -160,6 +161,7 @@ func (s *Server) SetCards(roomID types.ID, playerID types.ID, payload []byte) {
 		log.WithFields(log.Fields{
 			"payload": fmt.Sprintf("%s", payload),
 		}).Error("could not parse set-cards action")
+		return
 	}
 
 	s.store.SetCards(roomID, playerID, action.Payload)
@@ -167,4 +169,21 @@ func (s *Server) SetCards(roomID types.ID, playerID types.ID, payload []byte) {
 
 type ActionSetCards struct {
 	Payload []string `json:"payload"`
+}
+
+func (s *Server) SetAutoReveal(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetAutoReveal{}
+	err := json.Unmarshal(payload, &action)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%s", payload),
+		}).Error("could not parse set-auto-reveal action")
+		return
+	}
+
+	s.store.SetAutoReveal(roomID, action.Payload)
+}
+
+type ActionSetAutoReveal struct {
+	Payload bool `json:"payload"`
 }
