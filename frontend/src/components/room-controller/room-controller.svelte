@@ -44,10 +44,8 @@
         api.setCards(cards)
     }
 
-    function onAutoRevealChange(event: Event){
-        const inputEl = event.target as HTMLInputElement
-        const autoReveal = inputEl.checked as boolean
-        console.debug('[DEBUG] ', {autoReveal} )
+    function onAutoRevealChange(event: CustomEvent){
+        const autoReveal = event.detail as boolean
         api.setAutoReveal(autoReveal)
     }
 
@@ -85,7 +83,7 @@
 
     <AutoReveal
         value={autoReveal}
-        on:change={onAutoRevealChange}     
+        on:activate={onAutoRevealChange}
     />
 {/if}
 
