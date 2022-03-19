@@ -7,19 +7,12 @@ import {createEventDispatcher} from "svelte"
     const dispatch = createEventDispatcher()
     const keyActivate = "activate"
     
-    let mainEl: HTMLElement
-
-    function onChange(){
-        disabled = true
-    }
-
     function onActivate(event: CustomEvent){
         const selectedIndex = event.detail as number
         const value = options[selectedIndex].value
         dispatch(keyActivate, value)
     }
 
-    $: disabled = false && value
     $: typeIndex = value ? 1 : 0;
 
     const options = [
@@ -34,8 +27,7 @@ import {createEventDispatcher} from "svelte"
     ]
 </script>
 
-<main bind:this={mainEl}>
-    <!-- <label> -->
+<main >
         <span>Auto reveal</span>
 
         <ButtonToggle 
@@ -43,14 +35,6 @@ import {createEventDispatcher} from "svelte"
             on:activate={onActivate} 
             activeIndex={typeIndex}
         />
-        <!-- <input 
-            type="checkbox" 
-            on:change 
-            on:change={onChange} 
-            checked={value} 
-            disabled={disabled}
-        /> -->
-    <!-- </label> -->
 </main>
 
 <style>
@@ -58,7 +42,6 @@ import {createEventDispatcher} from "svelte"
         display:        flex;
         flex-direction: row;
         align-items:    center;
-        /* border:         2px solid var(--color-red); */
         padding:        0;
         color:          white;
     }
