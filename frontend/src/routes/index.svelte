@@ -2,14 +2,15 @@
 import Room from "./room/[roomid]/[playername]/room.svelte";
 
 
-    export const ssr = false;
+    // export const ssr = false;
 	export const prerender = false;
-	export async function load({ page, fetch, session, stuff }) {
-        console.debug('[DEBUG] ', {params: page.params.roomid} )
+	// export async function load({ page, fetch, session, stuff }) {
+	export async function load({ url, params, props, fetch }) {
+        console.debug('[DEBUG] ', {params: params.roomid} )
         // return {
         //     status: 200,
         // }
-        const roomID = page.params.roomid
+        const roomID = params.roomid
         if(!roomID){
             return {
                 status: 302,
@@ -19,7 +20,7 @@ import Room from "./room/[roomid]/[playername]/room.svelte";
 
         return {
             status: 302,
-            redirect: `/room/${page.params.roomid}`
+            redirect: `/room/${params.roomid}`
         };
 
     }

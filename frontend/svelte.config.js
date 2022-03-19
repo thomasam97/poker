@@ -11,8 +11,8 @@ const config = {
 		paths:{
 			// base: "/poker",
 		},
-		target: '#svelte',
-		ssr: true,
+		// target: '#´svelte',
+		// ssr: true,
 		adapter: adapter({
 			// default options are shown
 			pages: 'build',
