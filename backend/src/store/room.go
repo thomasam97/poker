@@ -46,6 +46,16 @@ func (r *Room) findPlayerIndex(p Player) int {
 	return wantedIndex
 }
 
+func (r *Room) findPlayerIndexByID(playerID types.ID) int {
+	wantedIndex := -1
+	for pi, player := range r.players {
+		if player.ID == playerID {
+			return pi
+		}
+	}
+	return wantedIndex
+}
+
 func (r *Room) findPlayerByID(playerID types.ID) *Player {
 	for _, player := range r.players {
 		if player.ID == playerID {
@@ -203,5 +213,26 @@ func (r *Room) SetAutoReveal(autoReveal bool) {
 		"roomID":     r.id,
 	}).Info("set auto reveal")
 	r.autoReveal = autoReveal
+	r.EmitState()
+}
+
+func (r *Room) SetAdmin(newAdminID types.ID) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	log.WithFields(log.Fields{
+		"newAdminID": newAdminID,
+		"roomID":     r.id,
+	}).Info("set admin")
+	newAdminIndex := r.findPlayerIndexByID(newAdminID)
+
+	newAdmin := r.players[newAdminIndex]
+	oldAdmin := r.players[0]
+
+	newAdmin.IsAdmin = true
+	oldAdmin.IsAdmin = false
+
+	r.players[0] = newAdmin
+	r.players[newAdminIndex] = oldAdmin
+
 	r.EmitState()
 }

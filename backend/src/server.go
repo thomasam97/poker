@@ -35,6 +35,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
 	srv.actionMap[store.TypeSetCards] = srv.SetCards
 	srv.actionMap[store.TypeSetAutoReveal] = srv.SetAutoReveal
+	srv.actionMap[store.TypeSetAdmin] = srv.SetAdmin
 
 	return &srv
 }
@@ -186,4 +187,21 @@ func (s *Server) SetAutoReveal(roomID types.ID, playerID types.ID, payload []byt
 
 type ActionSetAutoReveal struct {
 	Payload bool `json:"payload"`
+}
+
+func (s *Server) SetAdmin(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetAdmin{}
+	err := json.Unmarshal(payload, &action)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%d", payload),
+		}).Error("could not parse set-admin action")
+		return
+	}
+
+	s.store.SetAdmin(roomID, action.Payload)
+}
+
+type ActionSetAdmin struct {
+	Payload types.ID `json:"payload"`
 }

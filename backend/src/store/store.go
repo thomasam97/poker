@@ -126,8 +126,6 @@ func (s *Store) SetCards(roomID types.ID, playerID types.ID, cards Cards) {
 	room.SetCards(playerID, cards)
 }
 
-// s.store.SetAutoReveal(roomID, action.Payload)
-
 func (s *Store) SetAutoReveal(roomID types.ID, autoReveal bool) {
 	room := s.searchRoom(roomID)
 	if room == nil {
@@ -135,4 +133,13 @@ func (s *Store) SetAutoReveal(roomID types.ID, autoReveal bool) {
 	}
 
 	room.SetAutoReveal(autoReveal)
+}
+
+func (s *Store) SetAdmin(roomID types.ID, newAdminID types.ID) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.SetAdmin(newAdminID)
 }

@@ -8,6 +8,7 @@
 
     export let status = "";
     export let player: Player
+    export let players: Player[] = []
     export let roomID = "";
     export let sets: Set[] = [];
     export let autoReveal: boolean = false;
@@ -42,6 +43,13 @@
         const index = selectEl.value
         const cards = sets[index].cards
         api.setCards(cards)
+    }
+    
+    function onAdminChange(event: Event){
+        const selectEl = event.target as HTMLSelectElement
+        const index = selectEl.value
+        const player = players[index]
+        api.setAdmin(player)
     }
 
     function onAutoRevealChange(event: CustomEvent){
@@ -85,6 +93,15 @@
         value={autoReveal}
         on:activate={onAutoRevealChange}
     />
+
+    <label>
+        <span>Give admin to</span>
+        <select disabled={status === Status.InProgress} on:change={onAdminChange}>
+        {#each players as player, pi}
+            <option value={pi}>{player.name}</option>
+        {/each}
+    </select>
+</label>
 {/if}
 
     <ButtonToggle 

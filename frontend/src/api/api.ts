@@ -1,5 +1,5 @@
 import { config } from "$lib/env"
-import type { HandlerFn, PlayerType } from "./state-store";
+import type { HandlerFn, Player, PlayerType } from "./state-store";
 const BASE_URL = config.baseWS
 
 enum ActionTypes {
@@ -10,6 +10,7 @@ enum ActionTypes {
     SetPlayerType = "SetPlayerType",
     SetCards      = "SetCards",
     SetAutoReveal = "SetAutoReveal",
+    SetAdmin      = "SetAdmin",
 }
 
 export interface Message<T> {
@@ -65,6 +66,14 @@ class API {
         const msg = {
             type: ActionTypes.SetCards,
             payload: cards,
+        }
+        this.send(msg)
+    }
+
+    public setAdmin(player: Player){
+        const msg = {
+            type: ActionTypes.SetAdmin,
+            payload: player.id
         }
         this.send(msg)
     }

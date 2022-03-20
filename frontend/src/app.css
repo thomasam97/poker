@@ -141,3 +141,7 @@ select {
 select:disabled{
 	opacity: 50%;
 }
+
+label{
+	color: white
+}

@@ -66,6 +66,7 @@ function isPlayerSpectator( player: Player): boolean{
     <RoomController
         status={roomStatus} 
         player={player} 
+        players={players}
         roomID={roomID} 
         sets={sets} 
         autoReveal={autoReveal}    
