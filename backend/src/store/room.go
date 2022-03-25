@@ -165,7 +165,7 @@ func (r *Room) AutoRevealIfCan() {
 
 func (r *Room) HasEverybodyChosen() bool {
 	for _, player := range r.players {
-		if player.ChosenCard == "" {
+		if player.Type == PlayerTypePlayer && player.ChosenCard == "" {
 			return false
 		}
 	}
