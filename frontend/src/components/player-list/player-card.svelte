@@ -11,6 +11,7 @@
 <div 
     class="player-card" 
     class:playerHasChoosen
+    on:click
 >
     <div class="admin">
         {#if player.isAdmin}

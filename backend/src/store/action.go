@@ -14,4 +14,5 @@ const (
 	TypeSetCards      = "SetCards"
 	TypeSetAutoReveal = "SetAutoReveal"
 	TypeSetAdmin      = "SetAdmin"
+	TypeReVote        = "ReVote"
 )

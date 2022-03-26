@@ -11,6 +11,7 @@ enum ActionTypes {
     SetCards      = "SetCards",
     SetAutoReveal = "SetAutoReveal",
     SetAdmin      = "SetAdmin",
+    ReVote        = "ReVote",
 }
 
 export interface Message<T> {
@@ -82,6 +83,13 @@ class API {
         const msg = {
             type: ActionTypes.SetAutoReveal,
             payload: autoReveal,
+        }
+        this.send(msg)
+    }
+
+    public reVote(){
+        const msg = {
+            type: ActionTypes.ReVote,
         }
         this.send(msg)
     }

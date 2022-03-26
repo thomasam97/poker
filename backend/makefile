@@ -18,4 +18,4 @@ buildandrun: buildlocal
 
 
 publish: build
-	scp ./poker poker:~/poker
+	scp ./poker poker:~/opt/poker

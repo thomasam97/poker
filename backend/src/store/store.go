@@ -108,6 +108,15 @@ func (s *Store) Choose(roomID types.ID, playerID types.ID, card string) {
 	room.AutoRevealIfCan()
 }
 
+func (s *Store) ReVote(roomID types.ID, playerID types.ID) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.ReVote(playerID)
+}
+
 func (s *Store) SetPlayerType(roomID types.ID, playerID types.ID, playerType PlayerType) {
 	room := s.searchRoom(roomID)
 	if room == nil {

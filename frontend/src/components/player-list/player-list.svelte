@@ -1,4 +1,5 @@
 <script lang=ts>
+    import { createEventDispatcher } from 'svelte';
     import { fade, } from 'svelte/transition';
     import { flip } from 'svelte/animate';
     import { cubicInOut } from 'svelte/easing';
@@ -8,6 +9,16 @@
     export let players: Player[] = []
     export let currentPlayer: Player;
     export let isRevealed: boolean = false
+
+    const dispatch = createEventDispatcher()
+    function onClick(player: Player){
+        console.debug('[DEBUG] ', {player, currentPlayer} )
+        if(player.id !== currentPlayer.id){
+            return;
+        }
+
+        dispatch("revote")
+    }
 
     $: playingPlayer = players.filter(p => p.type === PlayerType.Player)
 
@@ -19,7 +30,12 @@
             transition:fade|local 
 	        animate:flip="{{duration: 200, easing: cubicInOut}}"
         >
-            <PlayerCard player={player} isCurrentPlayer={currentPlayer.id === player.id} isRevealed={isRevealed} />
+            <PlayerCard 
+                player={player} 
+                isCurrentPlayer={currentPlayer.id === player.id} 
+                isRevealed={isRevealed} 
+                on:click={() => onClick(player)}
+            />
         </li>
     {/each}
 </ol>

@@ -32,6 +32,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeReveal] = srv.Reveal
 	srv.actionMap[store.TypeReset] = srv.Reset
 	srv.actionMap[store.TypeChoose] = srv.Choose
+	srv.actionMap[store.TypeReVote] = srv.ReVote
 	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
 	srv.actionMap[store.TypeSetCards] = srv.SetCards
 	srv.actionMap[store.TypeSetAutoReveal] = srv.SetAutoReveal
@@ -137,6 +138,11 @@ func (s *Server) Choose(roomID types.ID, playerID types.ID, payload []byte) {
 
 type ActionChoose struct {
 	Payload string `json:"payload"`
+}
+
+func (s *Server) ReVote(roomID types.ID, playerID types.ID, payload []byte) {
+	s.store.ReVote(roomID, playerID)
+
 }
 
 func (s *Server) SetPlayerType(roomID types.ID, playerID types.ID, payload []byte) {

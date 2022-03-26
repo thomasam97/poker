@@ -157,6 +157,10 @@ func (r *Room) Choose(playerID types.ID, card string) {
 	r.EmitState()
 }
 
+func (r *Room) ReVote(playerID types.ID) {
+	r.Choose(playerID, "")
+}
+
 func (r *Room) AutoRevealIfCan() {
 	if r.autoReveal && r.HasEverybodyChosen() {
 		r.Reveal()

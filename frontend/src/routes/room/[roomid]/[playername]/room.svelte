@@ -35,6 +35,13 @@ function onChoose(card: string){
     api.choose(card)
 }
 
+function onRevote(){
+    if(!isVotingInProgress(roomStatus)){
+        return
+    }
+    api.reVote()
+}
+
 function hasPlayerChosen(player: Player): boolean {
     if(!player){
         return false
@@ -75,11 +82,19 @@ function isPlayerSpectator( player: Player): boolean{
 
 
 {#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
-    <PlayerList players={players} currentPlayer={player} isRevealed={isRevealed(roomStatus)} />
+    <PlayerList 
+        players={players} 
+        currentPlayer={player} 
+        isRevealed={isRevealed(roomStatus)}
+        on:revote={onRevote}
+    />
 {/if}
 
 {#if !isPlayerSpectator(player) && ( !hasPlayerChosen(player) && isGameRunnin(roomStatus) )}
-    <Cards on:choose={(event) => onChoose(event.detail)} cards={cards} />
+    <Cards 
+        cards={cards} 
+        on:choose={(event) => onChoose(event.detail)} 
+    />
 {/if}
 
 </main>
