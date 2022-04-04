@@ -1,7 +1,6 @@
 <script lang="ts">
 import { page } from "$app/stores";
-import { api, Cards as TypeCards, Set } from "../../../../api"
-import { Player, PlayerType, Status } from "../../../../api/state-store";
+import { api, Cards as TypeCards, Set, Status, Player, PlayerType } from "$lib/api"
 import { Cards } from "../../../../components/cards";
 import { PlayerList } from "../../../../components/player-list"
 import { RoomController } from "../../../../components/room-controller";

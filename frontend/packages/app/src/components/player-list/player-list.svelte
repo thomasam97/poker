@@ -3,7 +3,7 @@
     import { fade, } from 'svelte/transition';
     import { flip } from 'svelte/animate';
     import { cubicInOut } from 'svelte/easing';
-    import { Player, PlayerType } from "../../api";
+    import { Player, PlayerType } from "$lib/api";
     import PlayerCard from "./player-card.svelte";
 
     export let players: Player[] = []

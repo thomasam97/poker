@@ -1,6 +1,4 @@
-import { config } from "$lib/env"
 import type { HandlerFn, Player, PlayerType } from "./state-store";
-const BASE_URL = config.baseWS
 
 enum ActionTypes {
     StartVoting   = "StartVoting",
@@ -19,7 +17,7 @@ export interface Message<T> {
     payload?: T, 
 }
 
-class API {
+export class API {
     constructor(
         private url: string,
     ){}
@@ -141,4 +139,3 @@ class API {
         }
     }
     
-    export const api = new API(BASE_URL)

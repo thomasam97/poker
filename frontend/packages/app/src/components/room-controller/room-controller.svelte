@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { api } from "../../api"
-    import { PlayerType, Set, Status } from "../../api/state-store";
-    import type { Player } from "../../api";
+    import { PlayerType, Set, Status, api } from "$lib/api";
+    import type { Player } from "api";
     import { ButtonToggle } from "$lib/button-toggle"
     import RoomLink from "./room-link.svelte";
     import AutoReveal from "./auto-reveal.svelte";
