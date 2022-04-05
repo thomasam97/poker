@@ -1,28 +1,75 @@
 /// <reference types="cypress" />
 
-// Welcome to Cypress!
-//
-// This spec file contains a variety of sample tests
-// for a todo list app that are designed to demonstrate
-// the power of writing tests in Cypress.
-//
-// To learn more about how Cypress works and
-// what makes it such an awesome testing tool,
-// please read our getting started guide:
-// https://on.cypress.io/introduction-to-cypress
+import { API } from "api"
 
-describe('example to-do app', () => {
+describe('Feature: Playthrough', () => {
+    const api = new API("ws://localhost:7788/api")
+    const playerName = "John"
+    const roomName = "not-important."+Math.random().toString(36);
+    const playerCardPlayerNameSelector = makeTestId("player-card__player-name")
+    const roomNameSelector = makeTestId("room-name")
+    const playerCardBackSelector = makeTestId("player-card__back")
+
     beforeEach(() => {
-      // Cypress starts out with a blank slate for each test
-      // so we must tell it to visit our website with the `cy.visit()` command.
-      // Since we want to visit the same URL at the start of all our tests,
-      // we include it in our beforeEach function so that it runs before each test
-      cy.visit('http://localhost:60370')
+        cy.visit('http://localhost:60370')
+        const adminName = "admin"
+        api.register(roomName, adminName, () => {})
     })
 
-    it("opens the app", () => { 
-      cy.get('#room-name').should('have.length', 1)
-    })
-  
-})
-  
+    context("Given a user joins as a player", () => {
+        describe("When (s)he joins a room", () => { 
+            beforeEach(() => { 
+                cy.get(roomNameSelector)
+                    .clear()
+                    .type(roomName)
+
+                const playerNameSelector = makeTestId("player-name")
+                cy.get(playerNameSelector).type(playerName)
+                
+                const buttonJoinSelector = makeTestId('button-join')
+                cy.get(buttonJoinSelector).click()
+            })
+
+            it("Then (s)he will see her/his name above a card", () => { 
+                const playerCardPlayerNameSelector = makeTestId("player-card__player-name")
+                cy.get(playerCardPlayerNameSelector)
+                    .should('contain', playerName)
+            })
+
+            describe("When (s)he chooses a card and the room is revealed", () => { 
+                const adminsChosenCard = "3"
+                beforeEach(() => { 
+                    cy.get(playerCardPlayerNameSelector)
+                        .should('contain', playerName)
+                        .then(() => api.startRoom() )
+                        .then(() => api.choose(adminsChosenCard) )
+
+                    const cardSelector = makeTestId("card-3")
+                    cy.get(cardSelector)
+                        .click()
+                        .then(() => api.revealRoom())    
+            
+                })
+
+                it("Then (s)he sees her/his chosen card", () => { 
+                    cy.get(playerCardBackSelector).should('be.visible')
+                    cy.get(playerCardPlayerNameSelector).should('contain', playerName)
+                })
+                
+                it("And (s)he sees the chosen cards of the others", () => { 
+                    cy.get(playerCardBackSelector)
+                        .should('be.visible')
+                        .should('have.length',2)
+                    cy.get(playerCardPlayerNameSelector)
+                        .should('have.length', 2)
+                })
+            })
+
+        }) 
+    }) 
+}) 
+       
+
+function makeTestId(testId){
+    return `[test-id="${testId}"]`
+}

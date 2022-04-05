@@ -12,7 +12,6 @@
 
     const dispatch = createEventDispatcher()
     function onClick(player: Player){
-        console.debug('[DEBUG] ', {player, currentPlayer} )
         if(player.id !== currentPlayer.id){
             return;
         }

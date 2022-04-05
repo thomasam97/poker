@@ -36,6 +36,7 @@
 
 <div 
     class="card" 
+    test-id={`card-${label}`}
     bind:this={card} 
     on:mousemove={handleHover} 
     on:mouseleave={resetStyles}

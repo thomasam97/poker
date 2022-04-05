@@ -49,18 +49,31 @@
     
             <div>
                 <label for="room-name">Room Name</label>
-                <input id="room-name" bind:value={roomName} type="text" placeholder="random room name" />
+                <input 
+                    id="room-name" 
+                    test-id="room-name"
+                    bind:value={roomName} 
+                    type="text" 
+                    placeholder="random room name" 
+                />
             </div>
 
             <div>
                 <label for="player-name" >Player Name</label>
                 <!-- svelte-ignore a11y-autofocus -->
-                <input id="player-name" bind:value={playerName} type="text" placeholder="Jane" autofocus/>
+                <input 
+                    id="player-name" 
+                    test-id="player-name"
+                    bind:value={playerName} 
+                    type="text" 
+                    placeholder="Jane" 
+                    autofocus
+                />
             </div>
     
     
             <div class="button-container">
-                <button type="submit">Join</button>
+                <button type="submit" test-id="button-join">Join</button>
             </div>
         </form>
     </main>
