@@ -18,7 +18,7 @@
             👑
         {/if}
     </div>
-    <div class="player">
+    <div class="player" test-id="player-card__player-name">
         {player.name}
     </div>
     <div 
@@ -26,12 +26,18 @@
         class:revealed={isRevealed} 
     >
         <div class="flip-card-inner">
-            <div class="flip-card-front" 
-            class:isCurrentPlayer >
+            <div 
+                class="flip-card-front" 
+                test-id="player-card__front"
+                class:isCurrentPlayer 
+            >
                 <img src={CardBG} class="card-image" alt="SprintEins Logo small"/>
             </div>
-            <div class="flip-card-back"  
-            class:isCurrentPlayer>
+            <div 
+                class="flip-card-back"  
+                test-id="player-card__back"
+                class:isCurrentPlayer
+            >
                 <div class="content">
                     {player.chosenCard}
                 </div>

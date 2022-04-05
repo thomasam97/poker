@@ -71,11 +71,22 @@
 
 {#if player?.isAdmin }
     {#if status === Status.Start}
-        <button on:click={onStartClick}> Start Voting</button>
+        <button 
+            on:click={onStartClick}
+            test-id="button-start-voting"
+        > 
+            Start Voting
+        </button>
     {/if}
 
     {#if status === Status.InProgress}
-        <button on:click={onRevealClick} disabled={isRevealDisabled(player)}> Reveal Cards</button>
+        <button 
+            on:click={onRevealClick} 
+            test-id="button-reveal-cards"
+            disabled={isRevealDisabled(player)}
+        > 
+            Reveal Cards
+        </button>
     {/if}
     
     {#if status === Status.Revealed}
