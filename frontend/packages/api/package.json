@@ -2,9 +2,12 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch"
   },
   "author": "",
   "license": "ISC",

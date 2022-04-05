@@ -22,7 +22,7 @@ export class API {
         private url: string,
     ){}
         
-    private conn: WebSocket;
+    private conn?: WebSocket
 
     public setPlayerType(type: PlayerType){
         const msg: Message<PlayerType> = {
@@ -102,9 +102,9 @@ export class API {
     public register(roomID: string, playerName: string, handlerFn: HandlerFn){
         const url = this.urlRoomAndPlayer(roomID, playerName)
         let conn = this.conn
-        if( !this.conn ){
-            this.conn = new WebSocket(url);
-            conn = this.conn
+        if( !conn ){
+            conn = new WebSocket(url);
+            this.conn = conn
         }
         
         conn.onopen = (e) => {
