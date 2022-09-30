@@ -7,11 +7,12 @@
     
     
     const { 
-        roomid:     roomID,
+        roomid: roomID,
     } = $page.params
 
     let playerName = "";
     let roomName = randomRoomName();
+    
     if( roomID ){
         roomName = roomID
     }
@@ -24,13 +25,13 @@
     function onSubmit(event: Event){
         event.preventDefault();
     
-        const path = ["room",roomName,playerName].join("/")
+        const path = ["room", roomName, playerName].join("/")
      
         routeToPage(path)
     }
 
     function randomRoomName(): string {
-        const name = Math.random().toString(36).slice(2,7).toUpperCase()
+        const name = Math.random().toString(36).slice(2,10).toUpperCase()
         return name
     }
     
@@ -41,9 +42,11 @@
 	<title>Poker: Join Room</title>
 </svelte:head>
 
-
-<h1>Scrum Poker</h1>
-<main>
+<room>
+    <logo>
+        <img src="/img/logo_white.svg" alt="logo" />
+    </logo>
+    <main>
 
         <form on:submit={onSubmit}>
     
@@ -53,8 +56,10 @@
                     id="room-name" 
                     test-id="room-name"
                     bind:value={roomName} 
-                    type="text" 
-                    placeholder="random room name" 
+                    type="text"
+                    placeholder="PC2EY"
+
+                    
                 />
             </div>
 
@@ -73,32 +78,107 @@
     
     
             <div class="button-container">
-                <button type="submit" test-id="button-join">Join</button>
+                <button type="submit" test-id="button-join" class="primary">Enter</button>
             </div>
         </form>
     </main>
+
+    <footer>
+
+        <span class="made-by">Made by</span>
+        <a href="https://www.sprinteins.com" target="_blank">
+            <img src="/img/se_logo_white.png" class="se-logo" alt="SprintEins Logo"/>
+        </a> 
+    </footer>
+
+</room>
     
-    <style>
-        main {
-            display: flex;
-            justify-content: center;
-        }
-        form {
-            display: grid;
-            gap:     1rem;
-            width:   auto;
-        }
+<style>
+
+
+    room {
+        height:             100%;
+        display:            grid;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+    }
+    logo{
+        display:    block;
+        text-align: center
+    }
+    logo img {
+        width:           900px;
+        height:          220px;
+        object-fit:      cover;
+        object-position: 50% -150px;
+        margin-top:      2.5rem;
+        margin-bottom:   2.5rem;
+    }
     
-        label {
-            display:        block;
-            font-family:    "SoinSansProHeadline";
-            text-transform: uppercase;
-            font-weight:    400;
-            color:          white;
-        }
-    
-        .button-container {
-            text-align: right;
-        }
-    
-    </style>
+    form {
+        display:         flex;
+        gap:             5rem;
+        flex-direction:  column;
+        flex-wrap:       wrap;
+        justify-content: center;
+
+        width: auto;
+    }
+
+    label {
+        display:        block;
+        font-family:    "SoinSansProHeadline";
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight:    400;
+        color:          white;
+        font-size:      1.25rem;
+        margin-bottom:  0.5rem;
+    }
+
+    input {
+        /* height:    120px; */
+        width:        300px;
+        font-size:    1.25rem;
+        padding:      1.25rem;
+        border-width: 0.25rem;
+    }
+
+    .button-container {
+        text-align: right;
+    }
+
+    button {
+        padding:      1.5rem;
+        border-width: 0.25rem;
+    }
+
+    footer {
+		display: 		 flex;
+		flex-direction:  column;
+		justify-content: center;
+		align-items: 	 center;
+		padding: 		 40px;
+	}
+
+	.made-by {
+		color: 	   		white;
+		font-size: 		1rem;
+		font-family: 	var(--font-all-capital);
+		text-transform: uppercase;
+	}
+
+	footer a {
+		font-weight: bold;
+	}
+
+	.se-logo{
+		width: 200px;
+	}
+
+
+</style>

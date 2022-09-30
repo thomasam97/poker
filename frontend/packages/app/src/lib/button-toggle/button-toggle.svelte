@@ -26,12 +26,13 @@
     button-toggle {
         margin:  0;
         padding: 0;
-        height:  52px
+        height:  4rem;
     }
 
     button {
-        margin: 0;
-        height: 100%;
+        margin:  0;
+        height:  100%;
+        padding: 0 0.5rem;
     }
             
     button + button {
@@ -39,7 +40,8 @@
     }
 
     button.active{
-        background: var(--color-red);
-	    color:    black;
+        background: var(--color-gray);
+	    color:      black;
     }
+
 </style>

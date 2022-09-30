@@ -67,7 +67,7 @@ function isPlayerSpectator( player: Player): boolean{
 
 </script>
 
-<main>
+<room>
 
     <RoomController
         status={roomStatus} 
@@ -80,31 +80,66 @@ function isPlayerSpectator( player: Player): boolean{
 
 
 
-{#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
-    <PlayerList 
-        players={players} 
-        currentPlayer={player} 
-        isRevealed={isRevealed(roomStatus)}
-        on:revote={onRevote}
-    />
-{/if}
+    {#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
+        <PlayerList 
+            players={players} 
+            currentPlayer={player} 
+            isRevealed={isRevealed(roomStatus)}
+            on:revote={onRevote}
+        />
+    {/if}
 
-{#if !isPlayerSpectator(player) && ( !hasPlayerChosen(player) && isGameRunnin(roomStatus) )}
-    <Cards 
-        cards={cards} 
-        on:choose={(event) => onChoose(event.detail)} 
-    />
-{/if}
+    {#if !isPlayerSpectator(player) && ( !hasPlayerChosen(player) && isGameRunnin(roomStatus) )}
+        <Cards 
+            cards={cards} 
+            on:choose={(event) => onChoose(event.detail)} 
+        />
+    {/if}
 
-</main>
+    <footer>
+        <a href="https://www.sprinteins.com" class="logo">
+            <img src="/img/rect9.svg" class="logo" alt="Scrum-Poker Logo"/>
+        </a> 
+    </footer>
+
+
+</room>
 
 <style>
-    main {
-        display: grid;
-        gap: 2rem;
+    room {
+        height:             100%;
+        display:            grid;
+        gap:                2rem;
+        grid-template-rows: auto 1fr auto;
     }
 
     .ghost {
         height: 40px;
     }
+
+    footer {
+		display: 		 flex;
+		flex-direction:  column;
+		justify-content: center;
+		align-items: 	 center;
+		padding: 		 40px;
+	}
+
+    
+    a.logo{
+        width:      200px;
+        display:    block;
+        text-align: center
+    }
+
+    a.logo img {
+        width: 200px;
+        height: 190px;
+        object-fit: none;
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+        object-position: 50% 80%;
+    }
+
+
 </style>

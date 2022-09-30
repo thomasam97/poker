@@ -47,6 +47,9 @@ import {createEventDispatcher} from "svelte"
     }
     
     span {
-        padding: 0 0.5rem;
+        padding:     0 0.5rem;
+        font-family: var(--font-all-capital);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
     }
 </style>

@@ -1,9 +1,11 @@
 <script lang="ts">
+
     import { PlayerType, Set, Status, api } from "$lib/api";
     import type { Player } from "api";
     import { ButtonToggle } from "$lib/button-toggle"
     import RoomLink from "./room-link.svelte";
     import AutoReveal from "./auto-reveal.svelte";
+
 
     export let status = "";
     export let player: Player
@@ -63,6 +65,7 @@
     $: typeIndex = playerTypes.indexOf(player?.type)
     $: roomLink = `${window.location.origin}/room/${roomID}`
     
+    const key="button"
 
 </script>
 
@@ -72,6 +75,7 @@
 {#if player?.isAdmin }
     {#if status === Status.Start}
         <button 
+            class="primary"
             on:click={onStartClick}
             test-id="button-start-voting"
         > 
@@ -81,6 +85,7 @@
 
     {#if status === Status.InProgress}
         <button 
+            class="primary"
             on:click={onRevealClick} 
             test-id="button-reveal-cards"
             disabled={isRevealDisabled(player)}
@@ -90,7 +95,12 @@
     {/if}
     
     {#if status === Status.Revealed}
-        <button on:click={onResetClick}> Start Voting </button>
+        <button 
+            class="primary"
+            on:click={onResetClick}
+        > 
+            Start Voting 
+        </button>
     {/if}
     
     <select disabled={status === Status.InProgress} on:change={onCardChange}>
@@ -105,7 +115,7 @@
     />
 
     <label>
-        <span>Give admin to</span>
+        <span class="give-admin-label">Give admin to</span>
         <select disabled={status === Status.InProgress} on:change={onAdminChange}>
         {#each players as player, pi}
             <option value={pi}>{player.name}</option>
@@ -127,15 +137,28 @@
     room-controller{
         display:         flex;
         justify-content: center;
-        gap:             1rem;
+        gap:             3rem;
     }
 
     button {
-        width: 10rem;
+        min-width: 10rem;
+        height:    4rem;
+        padding:   0 0.5rem;
+
     }
 
     select{
         width:         200px;
         text-overflow: ellipsis;
+        font-size:     1rem;
+        border-width:  0.25rem;
+        height:        4rem;
     }
+
+    .give-admin-label{
+        letter-spacing: 0.1em;
+        font-family:    var(--font-all-capital);
+        text-transform: uppercase;
+    }
+
 </style>
