@@ -13,7 +13,7 @@
 
 </script>
 
-<a 
+<button
     class="tooltip"
     class:show={showTooltip}
     href={link} 
@@ -21,13 +21,9 @@
     data-tooltip="Link has been copied"
 >
     Copy Room Link
-</a>
+</button>
 
 <style>
-    a {
-        display:      grid;
-        place-content: center;
-    }
 
     .tooltip {
         position: relative;
@@ -40,7 +36,7 @@
     position:         absolute;
     width:            100px;
     background-color: rgb(109, 109, 109);
-    color:            var(--color-red);
+    color:            var(--color-gray);
     text-align:        center;
     padding:           10px;
     line-height:       1.2;

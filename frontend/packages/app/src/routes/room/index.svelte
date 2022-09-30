@@ -153,7 +153,7 @@
     }
 
     button {
-        padding:      1.5rem;
+        padding:      0 1.5rem;
         border-width: 0.25rem;
     }
 

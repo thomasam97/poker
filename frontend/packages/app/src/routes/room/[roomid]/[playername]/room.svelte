@@ -97,8 +97,13 @@ function isPlayerSpectator( player: Player): boolean{
     {/if}
 
     <footer>
-        <a href="https://www.sprinteins.com" class="logo">
-            <img src="/img/rect9.svg" class="logo" alt="Scrum-Poker Logo"/>
+        <span> &nbsp; </span>
+        <a href="https://www.sprinteins.com" class="logo" target="_blank">
+            <img src="/img/logo_white.svg" class="logo" alt="Scrum-Poker Logo"/>
+        </a> 
+
+        <a href="https://www.sprinteins.com" target="_blank" class="se-logo">
+            <img src="/img/se_logo_white.png" alt="SprintEins Logo"/>
         </a> 
     </footer>
 
@@ -113,32 +118,36 @@ function isPlayerSpectator( player: Player): boolean{
         grid-template-rows: auto 1fr auto;
     }
 
-    .ghost {
-        height: 40px;
-    }
-
     footer {
-		display: 		 flex;
-		flex-direction:  column;
-		justify-content: center;
-		align-items: 	 center;
-		padding: 		 40px;
+        display:     grid;
+        align-items: baseline;
+        height:      190px;
+        padding:     0;
+        grid-template-columns: 1fr 1fr 200px;
 	}
 
     
     a.logo{
         width:      200px;
+        height:     inherit;
         display:    block;
-        text-align: center
+        text-align: center;
+        padding:    0;
     }
 
     a.logo img {
-        width: 200px;
-        height: 190px;
-        object-fit: none;
-        margin-top: 2.5rem;
-        margin-bottom: 2.5rem;
-        object-position: 50% 80%;
+        width:           200px;
+        height:          inherit;
+        object-fit:      none;
+        object-position: 50% 71%;
+    }
+
+    .se-logo{
+		width: 200px;
+	}
+
+    .se-logo img{
+        width: inherit;
     }
 
 

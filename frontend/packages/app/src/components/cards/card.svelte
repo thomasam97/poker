@@ -59,7 +59,8 @@
         display:     grid;
         place-items: center;
         
-        background:    black;
+        /* background:    black; */
+        background:    var(--color-gray-dark);
         color:         white;
         cursor:        pointer; 
         border-radius: 4px;

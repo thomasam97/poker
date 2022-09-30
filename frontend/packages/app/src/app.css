@@ -5,9 +5,10 @@
 	font-family: "Helvetica Neue";
 
 
-	--color-black: #272727;
-	--color-gray:  #efefef;
-	--color-red:   #FF4B64;
+	--color-black: 	   #272727;
+	--color-gray:  	   #efefef;
+	--color-gray-dark: #696969;
+	--color-red:   	   #FF4B64;
 
 	--font-mono: 'Fira Mono', monospace;
 	--font-all-capital: "SoinSansProHeadline";
@@ -105,15 +106,14 @@ button {
 	border-style:   solid;
 	border-color:   var(--color-gray);
 	background:     transparent;
-	/* border:         none; */
-	/* padding:        0.5rem; */
 	cursor:         pointer;
 	color: 		    white;
 	font-family:    "SoinSansProHeadline";
 	text-transform: uppercase;
-	padding:        1.5rem;
+	padding:        0 1.5rem;
 	border-width:   0.25rem;
 	letter-spacing: 0.1em;
+	height: 		4rem;
 }
 
 button.primary {

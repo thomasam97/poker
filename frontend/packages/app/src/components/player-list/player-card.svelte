@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { Player } from "../../api";
-    import CardBG from "./card-bg.png"
 
     export let player: Player;
     export let isCurrentPlayer: boolean;
@@ -31,7 +30,7 @@
                 test-id="player-card__front"
                 class:isCurrentPlayer 
             >
-                <img src={CardBG} class="card-image" alt="SprintEins Logo small"/>
+                <img src="/img/card-bg.svg" class="card-image" alt="SprintEins Logo small"/>
             </div>
             <div 
                 class="flip-card-back"  
@@ -116,11 +115,9 @@
         text-align:      center;
         transition:      transform 0.6s;
         transform-style: preserve-3d;
-        /* box-shadow:      0 4px 8px 0 rgba(0,0,0,0.2); */
     }
 
     .flip-card.revealed .flip-card-inner{
-    /* .flip-card:hover .flip-card-inner { */
         transform: rotateY(180deg);
     }
 
@@ -137,19 +134,20 @@
     }
 
     .card-image {
-        width: 11rem;
+        width: 5rem;
     }
 
     .flip-card-front {
         /* background-color: #bbb; */
         /* background-image: "url(./card-bg.png)"; */
-        background-color: black;
+        /* background-color: black; */
+        background-color: var(--color-gray-dark);
         color: black;
     }
 
     .flip-card-back {
         /* background-color: #2980b9; */
-        background-color: black;
+        background-color: var(--color-gray-dark);
         color: white;
         transform: rotateY(180deg);
     }
