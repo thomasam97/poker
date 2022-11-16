@@ -116,6 +116,11 @@ func (r *Room) EmitState() {
 func (r *Room) StartVoting() {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
+
+	log.WithFields(log.Fields{
+		"roomID": r.id,
+	}).Info("start voting")
+
 	r.status = StatusInProgress
 	r.EmitState()
 }
@@ -127,6 +132,11 @@ func (r *Room) Reveal() {
 	if r.status == StatusRevealed {
 		return
 	}
+
+	log.WithFields(log.Fields{
+		"roomID": r.id,
+	}).Info("reveal cards")
+
 	r.status = StatusRevealed
 	r.EmitState()
 }
@@ -134,6 +144,11 @@ func (r *Room) Reveal() {
 func (r *Room) Reset() {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
+
+	log.WithFields(log.Fields{
+		"roomID": r.id,
+	}).Info("reset room")
+
 	r.status = StatusStart
 	for _, player := range r.players {
 		player.ChosenCard = ""
