@@ -1,5 +1,5 @@
 export * from "api"
 import { API } from "api"
-import { config } from "$lib/env"
+import { config } from "../env"
 
 export const api = new API(config.baseWS)

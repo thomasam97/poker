@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import { PlayerType, Set, Status, api } from "$lib/api";
+    import { PlayerType, type Set, Status, api } from "$lib/api";
     import type { Player } from "api";
     import { ButtonToggle } from "$lib/button-toggle"
     import RoomLink from "./room-link.svelte";

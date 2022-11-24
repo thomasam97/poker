@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="utf-8" />
+	<head>
+		<meta charset="utf-8" />
 	<link rel="icon"
 		  href="/favicons/apple-icon-114x114.png" />
 	<link rel="apple-touch-icon"
@@ -51,12 +50,9 @@
 
 	<meta name="viewport"
 		  content="width=device-width, initial-scale=1" />
-
-	%svelte.head%
-</head>
-
-<body>
-	<div id="svelte">%svelte.body%</div>
-</body>
-
+		%sveltekit.head%
+	</head>
+	<body>
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
 </html>
