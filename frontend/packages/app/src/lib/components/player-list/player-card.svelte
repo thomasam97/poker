@@ -5,6 +5,17 @@
     export let isCurrentPlayer: boolean;
     export let isRevealed: boolean = false;
     $: playerHasChoosen = player.chosenCard !== ""
+
+    const now = new Date()
+    const currentMonth = now.getMonth() + 1 
+    const currentDay = now.getDate()
+
+    const monthDecember = 12
+    const dayNikolaus = 6
+
+    $: isEasterEggSanta = currentMonth === monthDecember && currentDay === dayNikolaus
+    $: isEasterEggDecember = currentMonth === monthDecember
+
 </script>
 
 <div 
@@ -14,9 +25,23 @@
 >
     <div class="admin">
         {#if player.isAdmin}
+            {#if isEasterEggSanta}
+            🎅
+            {:else if isEasterEggDecember}
+            🎄
+            {:else}
             👑
+            {/if}
         {/if}
-    </div>
+        {#if !player.isAdmin}
+            {#if isEasterEggSanta}
+            <span class="reindeer">🦌</span>
+            {:else if isEasterEggDecember}
+            🎁
+            {:else}
+            {/if}
+        {/if}
+    </div>    
     <div class="player" test-id="player-card__player-name">
         {player.name}
     </div>
@@ -150,6 +175,14 @@
         background-color: var(--color-gray-dark);
         color: white;
         transform: rotateY(180deg);
+    }
+
+
+    /* EASTER EGGS */
+
+    .reindeer {
+        transform: rotateY(180deg);
+        display:   inline-block;
     }
 
 </style>
