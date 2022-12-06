@@ -141,6 +141,11 @@ button:disabled{
 	opacity: 50%;
 }
 
+button.text {
+	border:none;
+	text-decoration: underline; /* TODO: not sure */
+}
+
 
 input,
 select {

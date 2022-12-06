@@ -4,6 +4,8 @@
 	import { Cards } from "$lib/components/cards"
 	import { PlayerList } from "$lib/components/player-list"
 	import { RoomController } from "$lib/components/room-controller";
+	import { RoomPanels } from "$lib/components/room-panels";
+	import { RoomSettings } from "$lib/components/room-settings";
 	
 	const { 
 		roomid:     roomID,
@@ -62,20 +64,50 @@
 	function isPlayerSpectator( player: Player): boolean{
 		return player && player.type === PlayerType.Spectator
 	}
+
+	// 
+	// RoomPanels
+	// 
+	let isSettingsOpen = false;
+	function handleDone(){
+		console.debug('[DEBUG] ', {msg:"handling done"} )
+		isSettingsOpen = false
+	}
+	function handleOpenSettings(){
+		isSettingsOpen = true
+	}
+
+	$: console.debug('[DEBUG] ', {isSettingsOpen} )
 	
 </script>
 
 <room>
 	
-	<RoomController
-	status={roomStatus} 
-	player={player} 
-	players={players}
-	roomID={roomID} 
-	sets={sets} 
-	autoReveal={autoReveal}    
-	/>
 	
+	
+	<RoomPanels open={isSettingsOpen} on:opensettings={handleOpenSettings}>
+		<RoomSettings 
+			slot="settings"
+			player={player}
+			players={players}
+			status={roomStatus}
+			autoReveal={autoReveal}
+			sets={sets}
+
+			on:done={handleDone}
+		/>
+
+		<RoomController
+			slot="controls"
+			status={roomStatus} 
+			player={player} 
+			players={players}
+			roomID={roomID} 
+			sets={sets} 
+			autoReveal={autoReveal}
+		/>
+		
+	</RoomPanels>
 	
 	
 	{#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
