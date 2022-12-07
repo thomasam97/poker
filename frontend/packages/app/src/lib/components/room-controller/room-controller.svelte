@@ -32,11 +32,49 @@
 
     $: roomLink = `${window.location.origin}/room/${roomID}`
     
-    const key="button"
+    // 
+    // Icon Animation
+    // 
+    const iconSprites = [
+        "🔴",
+        "🟡",
+    ]
 
+    const iconAnimationSpeedMS = 1_000
+    const iconBaseURL = "https://fav.farm"
+    let currentIconIndex = 0
+
+    $: currentIcon = iconSprites[currentIconIndex]
+    $: iconURL = `${iconBaseURL}/${currentIcon}`
+    $: displayIcon = status === Status.InProgress
+    let interval: NodeJS.Timeout
+    function startIconAnimation(){
+        interval = setInterval(()=>{
+            currentIconIndex = (currentIconIndex+1)%iconSprites.length
+        },iconAnimationSpeedMS)
+    }
+    function stopIconAnimation(){
+        clearInterval(interval)
+    }
+
+    $: displayIcon && startIconAnimation()
+    $: !displayIcon && stopIconAnimation()
    
 </script>
 
+
+
+<svelte:head>
+    {#if displayIcon}
+        <link rel="icon" href={iconURL} />
+    {:else}
+    <link rel="icon"
+        type="image/png"
+        sizes="96x96"
+        href="/favicons/favicon-96x96.png">
+    {/if}
+</svelte:head>
+    
 <room-controller>
     <RoomLink link={roomLink} />
 
