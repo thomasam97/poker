@@ -17,6 +17,7 @@
         { label:"", value: CardBacks["monogram-gray"],  bgImagePath: CardBacks["monogram-gray"]  },
         { label:"", value: CardBacks["monogram-white"], bgImagePath: CardBacks["monogram-white"] },
         { label:"", value: CardBacks.tron,              bgImagePath: CardBacks.tron              },
+        { label:"", value: CardBacks.logo,              bgImagePath: CardBacks.logo              },
     ]
 
 </script>
@@ -58,14 +59,15 @@
     }
 
     .modal {
-        background-color: #00000024;
-        border-radius:    15px;
-        padding:          5rem;
-        box-shadow:       0px 0px 15px #00000024;
-        backdrop-filter:  blur(50px);
-        display:          grid;
-        place-items:      center;
-        border:           1px #00000017 solid;
+        background-color:        #00000024;
+        border-radius:           15px;
+        padding:                 5rem;
+        box-shadow:              0px 0px 15px #00000024;
+        backdrop-filter:         blur(50px);
+        -webkit-backdrop-filter: blur(50px);
+        display:                 grid;
+        place-items:             center;
+        border:                  1px #00000017 solid;
     }
 
 </style>

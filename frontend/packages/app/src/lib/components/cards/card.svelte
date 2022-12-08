@@ -1,5 +1,8 @@
 <!-- https://letsbuildui.dev/articles/a-3d-hover-effect-using-css-transforms -->
 <script lang="ts">
+  import { CardBacks } from "$lib/card-backs";
+
+
     
     // this is just a hack, because the animation is broken 
     // in the card back dialog
@@ -9,6 +12,7 @@
     const THRESHOLD = 10;
     
     let card;
+    const defaultCardBack = CardBacks.logo
 
 
     function handleHover(e) {
@@ -44,6 +48,7 @@
 <div 
     style={`background-image:url('${bgImagePath}')`}
     class="card" 
+    class:defaultbg={bgImagePath===defaultCardBack}
     test-id={`card-${label}`}
     bind:this={card} 
     on:mousemove={handleHover} 
@@ -83,6 +88,10 @@
         /* transition:      transform 0.01s ease; */
         transform-style: preserve-3d;
         will-change:     transform;
+    }
+
+    .card.defaultbg{
+        background-size: 5rem;
     }
 
     .card:hover{
