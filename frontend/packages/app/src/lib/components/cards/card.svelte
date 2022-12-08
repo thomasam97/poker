@@ -1,12 +1,19 @@
 <!-- https://letsbuildui.dev/articles/a-3d-hover-effect-using-css-transforms -->
 <script lang="ts">
+    
+    // this is just a hack, because the animation is broken 
+    // in the card back dialog
+    export let disableHoverAnimation = false
     export let label = "" 
+    export let bgImagePath = ""
     const THRESHOLD = 10;
     
     let card;
 
 
     function handleHover(e) {
+        if(disableHoverAnimation) { return }
+
         const { pageX, pageY, currentTarget } = e;
         const { clientWidth, clientHeight, offsetLeft, offsetTop } = currentTarget;
         
@@ -35,6 +42,7 @@
 </script>
 
 <div 
+    style={`background-image:url('${bgImagePath}')`}
     class="card" 
     test-id={`card-${label}`}
     bind:this={card} 
@@ -60,10 +68,14 @@
         place-items: center;
         
         /* background:    black; */
-        background:    var(--color-gray-dark);
         color:         white;
         cursor:        pointer; 
         border-radius: 4px;
+        
+        background:          var(--color-gray-dark);
+        background-size:     100%;
+        background-repeat:   no-repeat;
+        background-position: center;    
     }
 
     .card {

@@ -20,6 +20,7 @@ export type State = {
     cards:      Cards
     sets:       Set[]
     autoReveal: boolean
+
 }
 
 export interface Player {
@@ -28,6 +29,7 @@ export interface Player {
     isAdmin:    boolean
     chosenCard: string
     type:       PlayerType
+    cardBack:   string
 }
 
 export enum PlayerType {

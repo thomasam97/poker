@@ -1,15 +1,16 @@
 import type { HandlerFn, Player, PlayerType } from "./state-store";
 
 enum ActionTypes {
-    StartVoting   = "StartVoting",
-    Reveal        = "Reveal",
-    Reset         = "Reset",
-    Choose        = "Choose",
-    SetPlayerType = "SetPlayerType",
-    SetCards      = "SetCards",
-    SetAutoReveal = "SetAutoReveal",
-    SetAdmin      = "SetAdmin",
-    ReVote        = "ReVote",
+    StartVoting    = "StartVoting",
+    Reveal         = "Reveal",
+    Reset          = "Reset",
+    Choose         = "Choose",
+    SetPlayerType  = "SetPlayerType",
+    SetCards       = "SetCards",
+    SwitchCardBack = "SwitchCardBack",
+    SetAutoReveal  = "SetAutoReveal",
+    SetAdmin       = "SetAdmin",
+    ReVote         = "ReVote",
 }
 
 export interface Message<T> {
@@ -28,6 +29,14 @@ export class API {
         const msg: Message<PlayerType> = {
             type:     ActionTypes.SetPlayerType,
             payload: type,
+        }
+        this.send(msg);
+    }
+
+    public switchCardBack(cardBack: string){
+        const msg: Message<string> = {
+            type:     ActionTypes.SwitchCardBack,
+            payload: cardBack,
         }
         this.send(msg);
     }

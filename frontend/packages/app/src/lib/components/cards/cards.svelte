@@ -1,17 +1,23 @@
-<script>
+<script lang="ts">
     import Card from "./card.svelte";
     import { createEventDispatcher } from 'svelte';
+    import type{ Card as TypeCard } from "./card"
 
     const dispatch = createEventDispatcher();
 
-    export let cards = []
+    export let disableHoverAnimation = false
+    export let cards: TypeCard[] = []
 </script>
 
 
 <ol>
     {#each cards as card}
         <li>
-            <Card label={card} on:click={ () => dispatch("choose", card)} />
+            <Card 
+                label={card.label} 
+                bgImagePath={card.bgImagePath} 
+                disableHoverAnimation={disableHoverAnimation}
+                on:click={ () => dispatch("choose", card)} />
         </li>
     {/each}
 </ol>

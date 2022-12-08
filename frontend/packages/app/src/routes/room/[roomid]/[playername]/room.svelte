@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from "$app/stores"; 
-	import { api, type Cards as TypeCards, type Set, Status, type Player, PlayerType } from "$lib/api"
+	import { api, type Set, Status, type Player, PlayerType } from "$lib/api"
 	import { Cards } from "$lib/components/cards"
+  	import type { Card as TypeCard, } from "$lib/components/cards";
 	import { PlayerList } from "$lib/components/player-list"
 	import { RoomController } from "$lib/components/room-controller";
 	import { RoomPanels } from "$lib/components/room-panels";
@@ -11,11 +12,13 @@
 		roomid:     roomID,
 		playername: playerName,
 	} = $page.params
+
+	
 	
 	let player: Player | undefined;
 	let players: Player[] | undefined = []
 	let roomStatus: Status | undefined = Status.Init
-	let cards: TypeCards = []
+	let cards: TypeCard[] = []
 	let sets: Set[] = []
 	let autoReveal: boolean = false
 	
@@ -24,14 +27,14 @@
 		player = data.player
 		players = data.players
 		roomStatus = data.status
-		cards = data.cards
+		cards = data.cards.map( card => ({label: card, value:""}))
 		sets = data.sets
 		autoReveal = data.autoReveal
 		
 	})
 	
-	function onChoose(card: string){
-		api.choose(card)
+	function onChoose(card: TypeCard){
+		api.choose(card.label)
 	}
 	
 	function onRevote(){
@@ -70,14 +73,11 @@
 	// 
 	let isSettingsOpen = false;
 	function handleDone(){
-		console.debug('[DEBUG] ', {msg:"handling done"} )
 		isSettingsOpen = false
 	}
 	function handleOpenSettings(){
 		isSettingsOpen = true
 	}
-
-	$: console.debug('[DEBUG] ', {isSettingsOpen} )
 	
 </script>
 
@@ -111,19 +111,19 @@
 	
 	
 	{#if isPlayerSpectator(player) || hasPlayerChosen(player) || !isVotingInProgress(roomStatus)}
-	<PlayerList 
-	players={players} 
-	currentPlayer={player} 
-	isRevealed={isRevealed(roomStatus)}
-	on:revote={onRevote}
-	/>
+		<PlayerList 
+			players={players} 
+			currentPlayer={player} 
+			isRevealed={isRevealed(roomStatus)}
+			on:revote={onRevote}
+		/>
 	{/if}
 	
 	{#if !isPlayerSpectator(player) && ( !hasPlayerChosen(player) && isGameRunnin(roomStatus) )}
-	<Cards 
-	cards={cards} 
-	on:choose={(event) => onChoose(event.detail)} 
-	/>
+		<Cards 
+			cards={cards} 
+			on:choose={(event) => onChoose(event.detail)} 
+		/>
 	{/if}
 	
 	<footer>
