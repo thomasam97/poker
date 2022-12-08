@@ -9,6 +9,7 @@ type Player struct {
 	ChosenCard string          `json:"chosenCard"`
 	Conn       *websocket.Conn `json:"-"`
 	Type       PlayerType      `json:"type"`
+	CardBack   CardBack        `json:"cardBack"`
 }
 
 type PlayerType = string

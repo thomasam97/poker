@@ -208,6 +208,22 @@ func (r *Room) SetPlayerType(playerID types.ID, playerType PlayerType) {
 	r.EmitState()
 }
 
+func (r *Room) SwitchCardBack(playerID types.ID, cardback CardBack) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	player := r.findPlayerByID(playerID)
+	if player == nil {
+		return
+	}
+	log.WithFields(log.Fields{
+		"cardBack": cardback,
+		"playerID": playerID,
+		"roomID":   r.id,
+	}).Info("switch card back")
+	player.CardBack = cardback
+	r.EmitState()
+}
+
 func (r *Room) SetCards(playerID types.ID, cards Cards) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
