@@ -34,6 +34,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeChoose] = srv.Choose
 	srv.actionMap[store.TypeReVote] = srv.ReVote
 	srv.actionMap[store.TypeSetPlayerType] = srv.SetPlayerType
+	srv.actionMap[store.TypeSwitchCardBack] = srv.SwitchCardBack
 	srv.actionMap[store.TypeSetCards] = srv.SetCards
 	srv.actionMap[store.TypeSetAutoReveal] = srv.SetAutoReveal
 	srv.actionMap[store.TypeSetAdmin] = srv.SetAdmin
@@ -158,6 +159,22 @@ func (s *Server) SetPlayerType(roomID types.ID, playerID types.ID, payload []byt
 }
 
 type ActionSetPlayerType struct {
+	Payload string `json:"payload"`
+}
+
+func (s *Server) SwitchCardBack(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetPlayerType{}
+	err := json.Unmarshal(payload, &action)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"payload": fmt.Sprintf("%s", payload),
+		}).Error("could not parse switch-card-back action")
+	}
+
+	s.store.SwitchCardBack(roomID, playerID, action.Payload)
+}
+
+type ActionSwitchCardBack struct {
 	Payload string `json:"payload"`
 }
 

@@ -1,10 +1,12 @@
 <script lang="ts">
+    import { CardBacks } from "$lib/card-backs";
     import type { Player } from "../../api";
+    
 
     export let player: Player;
     export let isCurrentPlayer: boolean;
     export let isRevealed: boolean = false;
-    $: playerHasChoosen = player.chosenCard !== ""
+    $: playerHasChosen = player.chosenCard !== ""
 
     const now = new Date()
     const currentMonth = now.getMonth() + 1 
@@ -13,6 +15,12 @@
     const monthDecember = 12
     const dayNikolaus = 6
 
+    const defaultCardBack = CardBacks.logo
+    let cardBack = defaultCardBack
+    $: if(player.cardBack!==""){
+        cardBack = player.cardBack
+    }
+
     $: isEasterEggSanta = currentMonth === monthDecember && currentDay === dayNikolaus
     $: isEasterEggDecember = currentMonth === monthDecember
 
@@ -20,25 +28,26 @@
 
 <div 
     class="player-card" 
-    class:playerHasChoosen
+    class:playerHasChosen
     on:click
 >
     <div class="admin">
         {#if player.isAdmin}
             {#if isEasterEggSanta}
-            🎅
+                🎅
             {:else if isEasterEggDecember}
-            🎄
+                🎄
             {:else}
-            👑
+                👑
             {/if}
         {/if}
         {#if !player.isAdmin}
             {#if isEasterEggSanta}
-            <span class="reindeer">🦌</span>
+                <span class="reindeer">🦌</span>
             {:else if isEasterEggDecember}
-            🎁
+                🎁
             {:else}
+                &nbsp;    
             {/if}
         {/if}
     </div>    
@@ -55,7 +64,12 @@
                 test-id="player-card__front"
                 class:isCurrentPlayer 
             >
-                <img src="/img/card-bg.svg" class="card-image" alt="SprintEins Logo small"/>
+                <img 
+                    src={cardBack} 
+                    class="card-image"  
+                    class:default={cardBack===defaultCardBack}
+                    alt="SprintEins Logo small"
+                />
             </div>
             <div 
                 class="flip-card-back"  
@@ -159,6 +173,9 @@
     }
 
     .card-image {
+        width: 99%;
+    }
+    .card-image.default{
         width: 5rem;
     }
 

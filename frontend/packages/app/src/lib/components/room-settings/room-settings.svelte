@@ -3,6 +3,8 @@
     import { PlayerType, api, type Player, Status, type Set } from "$lib/api";
     import { ButtonToggle } from "$lib/button-toggle"
     import AutoReveal from "./auto-reveal.svelte"
+    import CardSwitcher from "./card-switcher.svelte"
+    import type { Card } from "$lib/components/cards"
 
 
     // 
@@ -63,8 +65,20 @@
     // 
     const dispatch = createEventDispatcher();
     function dispatchDone(){
-        console.debug('[DEBUG] ', {msg:"dispacting done"} )
         dispatch('done')
+    }
+
+    // 
+    // Card Back Switcher
+    // 
+    let isCardSwitcherOpen = false
+    function openCardSwitcherDialog(){
+        isCardSwitcherOpen = true
+    }
+    function handleSwitchCardBack(cardback: Card){
+        api.switchCardBack(cardback.value)
+        isCardSwitcherOpen = false
+        dispatchDone()
     }
 </script>
 
@@ -99,12 +113,22 @@
         on:activate={onActivate} 
         activeIndex={typeIndex}
     />
+
+    <button on:click={openCardSwitcherDialog}>
+        Switch Card Back
+    </button>
+
     </div>
 
     <div class="done-container">
         <button class="text" on:click={dispatchDone}>Done ⬆</button>
     </div>
 </room-settings>
+
+<CardSwitcher 
+    open={isCardSwitcherOpen} 
+    on:switchcardback={(event) => handleSwitchCardBack(event.detail)} 
+/>
 
 
 <style>
