@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { page } from "$app/stores"; 
-	import { api, type Set, Status, type Player, PlayerType } from "$lib/api"
+	import { api, stash, type Set, Status, type Player, PlayerType, type State } from "$lib/api"
 	import { Cards } from "$lib/components/cards"
   	import type { Card as TypeCard, } from "$lib/components/cards";
 	import { PlayerList } from "$lib/components/player-list"
 	import { RoomController } from "$lib/components/room-controller";
 	import { RoomPanels } from "$lib/components/room-panels";
 	import { RoomSettings } from "$lib/components/room-settings";
+	import { CardBacks } from "$lib/card-backs";
 	
 	const { 
 		roomid:     roomID,
@@ -14,24 +15,41 @@
 	} = $page.params
 
 	
-	
 	let player: Player | undefined;
 	let players: Player[] | undefined = []
 	let roomStatus: Status | undefined = Status.Init
 	let cards: TypeCard[] = []
 	let sets: Set[] = []
 	let autoReveal: boolean = false
-	
-	api.register(roomID, playerName, (data) => {
-		
+
+	// 
+	// API Connection
+	// 
+	api.register(roomID, playerName, onMessage, onOpen)
+
+	function onMessage(data: State){
 		player = data.player
 		players = data.players
 		roomStatus = data.status
 		cards = data.cards.map( card => ({label: card, value:""}))
 		sets = data.sets
 		autoReveal = data.autoReveal
-		
-	})
+	}
+	function onOpen(){
+		let cardBack = stash.CardBack()
+
+		const isSupportedCardBack = Object.values(CardBacks).indexOf(cardBack) >= 0
+		if(!isSupportedCardBack){
+			cardBack = CardBacks.logo
+			stash.storeCardBack(cardBack)
+		}
+
+		api.switchCardBack(cardBack)
+	}
+	
+	
+
+	// ---
 	
 	function onChoose(card: TypeCard){
 		api.choose(card.label)

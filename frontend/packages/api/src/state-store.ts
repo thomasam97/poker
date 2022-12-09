@@ -49,6 +49,7 @@ const state = writable(initalState)
 
 export type UnsubscriberFn = () => void
 export type HandlerFn = (state: State) => void 
+export type HandlerFnOnOpen = () => void
 
 export function subscribe(handler: HandlerFn): UnsubscriberFn {
     return state.subscribe(handler)

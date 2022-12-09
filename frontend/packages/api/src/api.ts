@@ -1,4 +1,4 @@
-import type { HandlerFn, Player, PlayerType } from "./state-store";
+import type { HandlerFn, HandlerFnOnOpen, Player, PlayerType } from "./state-store";
 
 enum ActionTypes {
     StartVoting    = "StartVoting",
@@ -108,7 +108,12 @@ export class API {
         this.conn.send(payload);
     }
     
-    public register(roomID: string, playerName: string, handlerFn: HandlerFn){
+    public register(
+        roomID: string, 
+        playerName: string, 
+        handlerFn: HandlerFn, 
+        onOpen: HandlerFnOnOpen = () => {},
+    ){
         const url = this.urlRoomAndPlayer(roomID, playerName)
         let conn = this.conn
         if( !conn ){
@@ -118,6 +123,7 @@ export class API {
         
         conn.onopen = (e) => {
             console.info("[open] Connection established");
+            onOpen()
         };
         
         conn.onmessage = (event) => {

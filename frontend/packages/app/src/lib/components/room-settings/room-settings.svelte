@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { PlayerType, api, type Player, Status, type Set } from "$lib/api";
+    import { PlayerType, api, stash, type Player, Status, type Set } from "$lib/api";
     import { ButtonToggle } from "$lib/button-toggle"
     import AutoReveal from "./auto-reveal.svelte"
     import CardSwitcher from "./card-switcher.svelte"
@@ -77,6 +77,7 @@
     }
     function handleSwitchCardBack(cardback: Card){
         api.switchCardBack(cardback.value)
+        stash.storeCardBack(cardback.value)
         isCardSwitcherOpen = false
         dispatchDone()
     }

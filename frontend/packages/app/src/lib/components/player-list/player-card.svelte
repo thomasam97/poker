@@ -51,7 +51,7 @@
             {/if}
         {/if}
     </div>    
-    <div class="player" test-id="player-card__player-name">
+    <div class="player" test-id="player-card__player-name" title={player.name}>
         {player.name}
     </div>
     <div 
@@ -103,7 +103,7 @@
         transition:    all 0.3s ease;
     }
 
-    .player-card:not(.playerHasChoosen){
+    .player-card:not(.playerHasChosen){
         opacity: 50%;
         transform: scale(0.9, 0.9);
     }
@@ -122,10 +122,13 @@
     }
 
     .player{
-        width:      12rem;
-        text-align: center;
-        font-size:  2rem;
-        color:      white;
+        width:         12rem;
+        text-align:    center;
+        font-size:     2rem;
+        color:         white;
+        white-space:   nowrap;
+        text-overflow: ellipsis;
+        overflow:      hidden;
     }
     .admin{
         width:      12rem;
