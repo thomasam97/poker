@@ -103,7 +103,7 @@
         transition:    all 0.3s ease;
     }
 
-    .player-card:not(.playerHasChoosen){
+    .player-card:not(.playerHasChosen){
         opacity: 50%;
         transform: scale(0.9, 0.9);
     }
