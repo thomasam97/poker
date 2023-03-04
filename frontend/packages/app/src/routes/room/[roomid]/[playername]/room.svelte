@@ -99,6 +99,10 @@
 	
 </script>
 
+<svelte:head>
+	<title>Poker: Room {roomID}</title>
+</svelte:head>
+
 <room>
 	
 	
