@@ -1,6 +1,6 @@
 # Poker
 
-A Scrum poker app.
+A scrum-poker app: https://scrum-poker.sprinteins.com/
 
 ## Documentation
 
