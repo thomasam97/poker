@@ -82,7 +82,7 @@
 
     <footer>
 
-        <span class="made-by">Made by</span>
+        <span class="made-by">Made without 🍪</span>
         <a href="https://www.sprinteins.com" target="_blank">
             <img src="/img/se_logo_white.png" class="se-logo" alt="SprintEins Logo"/>
         </a> 

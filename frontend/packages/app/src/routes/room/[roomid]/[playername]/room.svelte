@@ -119,10 +119,8 @@
 			slot="controls"
 			status={roomStatus} 
 			player={player} 
-			players={players}
 			roomID={roomID} 
-			sets={sets} 
-			autoReveal={autoReveal}
+			
 		/>
 		
 	</RoomPanels>

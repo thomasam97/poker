@@ -1,8 +1,13 @@
 <script lang="ts">
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
-
+	import {initConsoleDetection} from  "$lib/dev-tools/console-detector"
+	import {initConsoleMessage} from "./console-message"
 	
+
+	initConsoleDetection()
+	initConsoleMessage()
+
 
 </script>
 

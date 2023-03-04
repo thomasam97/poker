@@ -68,7 +68,7 @@ func (s *Server) wshandler(w http.ResponseWriter, r *http.Request, c *gin.Contex
 	roomID := c.Param("roomid")
 	playername := c.Param("playername")
 
-	log.Printf("roomid=%s playername=%s", roomID, playername)
+	log.Printf("roomid='%s' playername='%s'", roomID, playername)
 
 	player := store.Player{
 		ID:   uuid.NewString(),
