@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 
 export function initConsoleMessage(){
-	globalThis.addEventListener("devtoolschange", handleDevToolsChange)
+	globalThis.window.addEventListener("devtoolschange", handleDevToolsChange)
 }
 
 function handleDevToolsChange(event:unknown){
@@ -29,10 +29,10 @@ function printConsoleMessage(){
 		"			   \\/_/                                                                                                 ",
 	].join("\n")
 
-	console.log(`%c${banner}`, " color: #EA5768")
+	console.log(`%c${banner}`, " color: #EA5768; font-family:monospace")
 	// console.log("%cHi! Are you interested in working on apps like this? Do you want to work on apps like this?\\nCheck out our vacancies:", "color: #EA5768; font-size:30px");
 	console.log("%cHi! Are you interested in working on apps like this?\nCheck out our vacancies at:", "color: #EA5768; font-size:30px");
-	console.log("%chttps://sprinteins.com/jobs", "background: #EA5768; color:white; font-size:30px; padding: 0.5rem 1rem; text-transform: uppercase;")
+	console.log("%chttps://sprinteins.com/jobs", "background-color: #EA5768; color:white; font-size:30px; padding: 0.5rem 1rem; text-transform: uppercase;")
 
 	
 }
