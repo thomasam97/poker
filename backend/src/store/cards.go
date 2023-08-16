@@ -15,4 +15,8 @@ var cardSets = []Set{
 		Label: "T-Shirt",
 		Cards: Cards{"xs", "s", "m", "l", "xl", "xxl"},
 	},
+	{
+		Label: "5 Finger Consensus",
+		Cards: Cards{"1", "2", "3", "4", "5"},
+	},
 }
