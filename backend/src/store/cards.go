@@ -19,4 +19,8 @@ var cardSets = []Set{
 		Label: "5 Finger Consensus",
 		Cards: Cards{"1", "2", "3", "4", "5"},
 	},
+	{
+		Label: "yes/no",
+		Cards: Cards{"yes", "no"},
+	},
 }
