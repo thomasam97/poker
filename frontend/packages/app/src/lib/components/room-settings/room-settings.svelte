@@ -112,7 +112,7 @@
     {#if autoReveal}
         <label>
             <span class="time-box-label">Time Box:</span>
-            <input type="number" on:input={onAutoRevealTimerChange} 
+            <input type="number" on:change={onAutoRevealTimerChange} 
                 value={autoRevealTimer} />
         </label>
     {/if}
