@@ -209,7 +209,7 @@
 
     input{
         border-width:  0.25rem;
-        width:         3rem;
+        width:         4rem;
         height:        1.5rem;
     }
 
