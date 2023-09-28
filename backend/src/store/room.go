@@ -17,6 +17,7 @@ type Room struct {
 	cards            Cards
 	autoReveal       bool
 	timeboxInSeconds uint
+	timer            *time.Timer
 }
 
 var defaultCards = cardSets[0]
@@ -29,6 +30,7 @@ func NewRoom(id types.ID) Room {
 		cards:            defaultCards.Cards,
 		autoReveal:       false,
 		timeboxInSeconds: 0,
+		timer:            nil,
 	}
 }
 
@@ -127,6 +129,12 @@ func (r *Room) StartVoting() {
 	}).Info("start voting")
 
 	r.status = StatusInProgress
+
+	if r.timer != nil {
+		log.Printf("stopping timer of previous voting round for roomid=%s", r.id)
+		r.timer.Stop()
+	}
+	go r.AutoRevealIfTimeboxIsUp()
 	r.EmitState()
 }
 
@@ -189,7 +197,8 @@ func (r *Room) AutoRevealIfCan() {
 
 func (r *Room) AutoRevealIfTimeboxIsUp() {
 	if r.timeboxInSeconds > 0 {
-		time.Sleep(time.Duration(r.timeboxInSeconds) * time.Second)
+		r.timer = time.NewTimer(time.Duration(r.timeboxInSeconds) * time.Second)
+		<-r.timer.C
 		r.Reveal()
 	}
 }

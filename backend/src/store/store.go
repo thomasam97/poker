@@ -77,7 +77,6 @@ func (s *Store) StartVoting(roomID types.ID) {
 	}
 
 	room.StartVoting()
-	go room.AutoRevealIfTimeboxIsUp()
 }
 
 func (s *Store) Reveal(roomID types.ID) {
