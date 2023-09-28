@@ -30,11 +30,11 @@
     //
     // Auto Reveal Timer
     //
-    export let autoRevealTimer: number = 0
-    function onAutoRevealTimerChange(event: Event){
-        const autoRevealTimerEl = event.target as HTMLInputElement
-        const autoRevealTimer = Number(autoRevealTimerEl.value) as number
-        api.setAutoRevealTimer(autoRevealTimer)
+    export let timeboxInSeconds: number = 0
+    function onTimeboxChange(event: Event){
+        const timeboxEl = event.target as HTMLInputElement
+        const timeboxInSeconds = Number(timeboxEl.value) as number
+        api.setTimebox(timeboxInSeconds)
     }
 
     // 
@@ -109,13 +109,17 @@
         on:activate={onAutoRevealChange}
     />
 
-    {#if autoReveal}
-        <label>
-            <span class="time-box-label">Time Box:</span>
-            <input type="number" on:change={onAutoRevealTimerChange} 
-                value={autoRevealTimer} />
-        </label>
-    {/if}
+    <label>
+        <span class="time-box-label">Timebox in s</span>
+        <input 
+        class="select" 
+        type="number" 
+        min="0"  
+        step="5" 
+        disabled={status === Status.InProgress}
+        on:change={onTimeboxChange} 
+            value={timeboxInSeconds} />
+    </label>
 
     <label>
         <span class="give-admin-label">Give admin to</span>
@@ -173,7 +177,7 @@
         justify-content: end;
     }
 
- button {
+    button {
         min-width: 10rem;
         height:    4rem;
         padding:   0 0.5rem;
@@ -198,5 +202,18 @@
         letter-spacing: 0.1em;
         font-family:    var(--font-all-capital);
         text-transform: uppercase;
+        padding:        0 0.5rem;
+        height:         4rem;
+        color:          white;
+    }
+
+    input{
+        border-width:  0.25rem;
+        width:         3rem;
+        height:        1.5rem;
+    }
+
+    input:focus{
+        box-shadow: none;
     }
 </style>
