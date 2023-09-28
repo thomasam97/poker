@@ -10,25 +10,25 @@ import (
 )
 
 type Room struct {
-	id              types.ID
-	players         []*Player
-	mtx             sync.Mutex
-	status          Status
-	cards           Cards
-	autoReveal      bool
-	autoRevealTimer int
+	id               types.ID
+	players          []*Player
+	mtx              sync.Mutex
+	status           Status
+	cards            Cards
+	autoReveal       bool
+	timeboxInSeconds uint
 }
 
 var defaultCards = cardSets[0]
 
 func NewRoom(id types.ID) Room {
 	return Room{
-		id:              id,
-		players:         make([]*Player, 0),
-		status:          StatusStart,
-		cards:           defaultCards.Cards,
-		autoReveal:      false,
-		autoRevealTimer: 0,
+		id:               id,
+		players:          make([]*Player, 0),
+		status:           StatusStart,
+		cards:            defaultCards.Cards,
+		autoReveal:       false,
+		timeboxInSeconds: 0,
 	}
 }
 
@@ -82,13 +82,13 @@ func (r *Room) RemovePlayer(p Player) {
 }
 
 type State struct {
-	Player          *Player   `json:"player"`
-	Players         []*Player `json:"players"`
-	Status          Status    `json:"status"`
-	Cards           Cards     `json:"cards"`
-	Sets            []Set     `json:"sets"`
-	AutoReveal      bool      `json:"autoReveal"`
-	AutoRevealTimer int       `json:"autoRevealTimer"`
+	Player           *Player   `json:"player"`
+	Players          []*Player `json:"players"`
+	Status           Status    `json:"status"`
+	Cards            Cards     `json:"cards"`
+	Sets             []Set     `json:"sets"`
+	AutoReveal       bool      `json:"autoReveal"`
+	TimeboxInSeconds uint      `json:"timeboxInSeconds"`
 }
 
 func (r *Room) EmitState() {
@@ -100,13 +100,13 @@ func (r *Room) EmitState() {
 	for _, player := range r.players {
 
 		state := State{
-			Player:          player,
-			Players:         r.players,
-			Status:          r.status,
-			Cards:           r.cards,
-			Sets:            cardSets,
-			AutoReveal:      r.autoReveal,
-			AutoRevealTimer: r.autoRevealTimer,
+			Player:           player,
+			Players:          r.players,
+			Status:           r.status,
+			Cards:            r.cards,
+			Sets:             cardSets,
+			AutoReveal:       r.autoReveal,
+			TimeboxInSeconds: r.timeboxInSeconds,
 		}
 		payload, err := json.Marshal(state)
 		if err != nil {
@@ -187,9 +187,9 @@ func (r *Room) AutoRevealIfCan() {
 	}
 }
 
-func (r *Room) AutoRevealIfTimeIsUp() {
-	if r.autoRevealTimer > 0 {
-		time.Sleep(time.Duration(r.autoRevealTimer) * time.Second)
+func (r *Room) AutoRevealIfTimeboxIsUp() {
+	if r.timeboxInSeconds > 0 {
+		time.Sleep(time.Duration(r.timeboxInSeconds) * time.Second)
 		r.Reveal()
 	}
 }
@@ -263,14 +263,14 @@ func (r *Room) SetAutoReveal(autoReveal bool) {
 	r.EmitState()
 }
 
-func (r *Room) SetAutoRevealTimer(autoRevealTimer int) {
+func (r *Room) SetTimebox(timeboxInSeconds uint) {
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
+	r.timeboxInSeconds = timeboxInSeconds
 	log.WithFields(log.Fields{
-		"autoRevealTimer": autoRevealTimer,
-		"roomID":          r.id,
-	}).Info("set to auto reveal after the timer is up")
-	r.autoRevealTimer = autoRevealTimer
+		"timebox": r.timeboxInSeconds,
+		"roomID":  r.id,
+	}).Info("set to auto reveal after the timebox is seconds has run out")
 	r.EmitState()
 }
 

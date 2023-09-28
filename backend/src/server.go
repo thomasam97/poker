@@ -37,7 +37,7 @@ func NewServer() *Server {
 	srv.actionMap[store.TypeSwitchCardBack] = srv.SwitchCardBack
 	srv.actionMap[store.TypeSetCards] = srv.SetCards
 	srv.actionMap[store.TypeSetAutoReveal] = srv.SetAutoReveal
-	srv.actionMap[store.TypeSetAutoRevealTimer] = srv.SetAutoRevealTimer
+	srv.actionMap[store.TypeSetTimebox] = srv.SetTimebox
 	srv.actionMap[store.TypeSetAdmin] = srv.SetAdmin
 
 	return &srv
@@ -213,21 +213,21 @@ type ActionSetAutoReveal struct {
 	Payload bool `json:"payload"`
 }
 
-func (s *Server) SetAutoRevealTimer(roomID types.ID, playerID types.ID, payload []byte) {
-	action := ActionSetAutoRevealTimer{}
+func (s *Server) SetTimebox(roomID types.ID, playerID types.ID, payload []byte) {
+	action := ActionSetTimebox{}
 	err := json.Unmarshal(payload, &action)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"payload": fmt.Sprintf("%s", payload),
-		}).Error("could not parse set-auto-reveal-timer action")
+		}).Error("could not parse timebox action")
 		return
 	}
 
-	s.store.SetAutoRevealTimer(roomID, action.Payload)
+	s.store.SetTimebox(roomID, action.Payload)
 }
 
-type ActionSetAutoRevealTimer struct {
-	Payload int `json:"payload"`
+type ActionSetTimebox struct {
+	Payload uint `json:"payload"`
 }
 
 func (s *Server) SetAdmin(roomID types.ID, playerID types.ID, payload []byte) {
