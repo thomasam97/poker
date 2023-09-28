@@ -134,7 +134,7 @@ func (r *Room) StartVoting() {
 		log.Printf("stopping timer of previous voting round for roomid=%s", r.id)
 		r.timer.Stop()
 	}
-	go r.AutoRevealIfTimeboxIsUp()
+	go r.RevealIfTimeboxIsUp()
 	r.EmitState()
 }
 
@@ -195,7 +195,7 @@ func (r *Room) AutoRevealIfCan() {
 	}
 }
 
-func (r *Room) AutoRevealIfTimeboxIsUp() {
+func (r *Room) RevealIfTimeboxIsUp() {
 	if r.timeboxInSeconds > 0 {
 		r.timer = time.NewTimer(time.Duration(r.timeboxInSeconds) * time.Second)
 		<-r.timer.C
