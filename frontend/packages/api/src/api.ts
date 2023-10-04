@@ -1,21 +1,21 @@
 import type { HandlerFn, HandlerFnOnOpen, Player, PlayerType } from "./state-store";
 
 enum ActionTypes {
-    StartVoting = "StartVoting",
-    Reveal = "Reveal",
-    Reset = "Reset",
-    Choose = "Choose",
-    SetPlayerType = "SetPlayerType",
-    SetCards = "SetCards",
+    StartVoting    = "StartVoting",
+    Reveal         = "Reveal",
+    Reset          = "Reset",
+    Choose         = "Choose",
+    SetPlayerType  = "SetPlayerType",
+    SetCards       = "SetCards",
     SwitchCardBack = "SwitchCardBack",
-    SetAutoReveal = "SetAutoReveal",
-    SetTimebox = "SetTimebox",
-    SetAdmin = "SetAdmin",
-    ReVote = "ReVote",
+    SetAutoReveal  = "SetAutoReveal",
+    SetTimebox     = "SetTimebox",
+    SetAdmin       = "SetAdmin",
+    ReVote         = "ReVote",
 }
 
 export interface Message<T> {
-    type: ActionTypes,
+    type:     ActionTypes,
     payload?: T,
 }
 
@@ -28,7 +28,7 @@ export class API {
 
     public setPlayerType(type: PlayerType) {
         const msg: Message<PlayerType> = {
-            type: ActionTypes.SetPlayerType,
+            type:    ActionTypes.SetPlayerType,
             payload: type,
         }
         this.send(msg);
@@ -36,7 +36,7 @@ export class API {
 
     public switchCardBack(cardBack: string) {
         const msg: Message<string> = {
-            type: ActionTypes.SwitchCardBack,
+            type:    ActionTypes.SwitchCardBack,
             payload: cardBack,
         }
         this.send(msg);
@@ -95,14 +95,6 @@ export class API {
         this.send(msg)
     }
 
-    public setTimebox(timeboxInSeconds: number) {
-        const msg = {
-            type: ActionTypes.SetTimebox,
-            payload: timeboxInSeconds,
-        }
-        this.send(msg)
-    }
-
     public reVote() {
         const msg = {
             type: ActionTypes.ReVote,
@@ -110,8 +102,16 @@ export class API {
         this.send(msg)
     }
 
+    public setTimebox(timeboxInSeconds: number) {
+        const msg = {
+            type:    ActionTypes.SetTimebox,
+            payload: timeboxInSeconds,
+        }
+        this.send(msg)
+    }
+
     private send<T>(msg: Message<T>) {
-        if (!this.conn) { return }
+        if(!this.conn){ return }
 
         const payload = JSON.stringify(msg)
         this.conn.send(payload);
@@ -125,7 +125,7 @@ export class API {
     ) {
         const url = this.urlRoomAndPlayer(roomID, playerName)
         let conn = this.conn
-        if (!conn) {
+        if( !conn ){
             conn = new WebSocket(url);
             this.conn = conn
         }
