@@ -30,7 +30,7 @@
     //
     // Auto Reveal Timer
     //
-    export let timeboxInSeconds: number = 0
+    export let timeboxInSeconds = 0
     function onTimeboxChange(event: Event){
         const timeboxEl = event.target as HTMLInputElement
         const timeboxInSeconds = Number(timeboxEl.value) as number

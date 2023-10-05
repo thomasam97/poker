@@ -20,7 +20,7 @@ export type State = {
     cards:              Cards
     sets:               Set[]
     autoReveal:         boolean
-    autoRevealTimeout:  number
+    timeboxInSeconds:   number
 }
 
 export interface Player {
@@ -43,7 +43,7 @@ const initalState: State = {
     cards:             [],
     sets:              [],
     autoReveal:        false,
-    autoRevealTimeout: 0,
+    timeboxInSeconds:  0,
 }
 
 const state = writable(initalState)
