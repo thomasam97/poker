@@ -196,11 +196,14 @@ func (r *Room) AutoRevealIfCan() {
 }
 
 func (r *Room) RevealIfTimeboxIsUp() {
-	if r.timeboxInSeconds > 0 {
-		r.timer = time.NewTimer(time.Duration(r.timeboxInSeconds) * time.Second)
-		<-r.timer.C
-		r.Reveal()
+	if r.timeboxInSeconds == 0 {
+		return
 	}
+
+	r.timer = time.NewTimer(time.Duration(r.timeboxInSeconds) * time.Second)
+	<-r.timer.C
+	r.Reveal()
+
 }
 
 func (r *Room) HasEverybodyChosen() bool {
@@ -279,7 +282,7 @@ func (r *Room) SetTimebox(timeboxInSeconds uint) {
 	log.WithFields(log.Fields{
 		"timebox": r.timeboxInSeconds,
 		"roomID":  r.id,
-	}).Info("set to auto reveal after the timebox is seconds has run out")
+	}).Info("set timebox seconds")
 	r.EmitState()
 }
 
