@@ -9,33 +9,34 @@ enum ActionTypes {
     SetCards       = "SetCards",
     SwitchCardBack = "SwitchCardBack",
     SetAutoReveal  = "SetAutoReveal",
+    SetTimebox     = "SetTimebox",
     SetAdmin       = "SetAdmin",
     ReVote         = "ReVote",
 }
 
 export interface Message<T> {
     type:     ActionTypes,
-    payload?: T, 
+    payload?: T,
 }
 
 export class API {
     constructor(
         private url: string,
-    ){}
-        
+    ) { }
+
     private conn?: WebSocket
 
-    public setPlayerType(type: PlayerType){
+    public setPlayerType(type: PlayerType) {
         const msg: Message<PlayerType> = {
-            type:     ActionTypes.SetPlayerType,
+            type:    ActionTypes.SetPlayerType,
             payload: type,
         }
         this.send(msg);
     }
 
-    public switchCardBack(cardBack: string){
+    public switchCardBack(cardBack: string) {
         const msg: Message<string> = {
-            type:     ActionTypes.SwitchCardBack,
+            type:    ActionTypes.SwitchCardBack,
             payload: cardBack,
         }
         this.send(msg);
@@ -54,7 +55,7 @@ export class API {
         }
         this.send(msg)
     }
-  
+
     public resetRoom() {
         const msg = {
             type: ActionTypes.Reset
@@ -62,7 +63,7 @@ export class API {
         this.send(msg)
     }
 
-    public choose(card: string){
+    public choose(card: string) {
         const msg = {
             type: ActionTypes.Choose,
             payload: card,
@@ -78,7 +79,7 @@ export class API {
         this.send(msg)
     }
 
-    public setAdmin(player: Player){
+    public setAdmin(player: Player) {
         const msg = {
             type: ActionTypes.SetAdmin,
             payload: player.id
@@ -94,43 +95,51 @@ export class API {
         this.send(msg)
     }
 
-    public reVote(){
+    public reVote() {
         const msg = {
             type: ActionTypes.ReVote,
         }
         this.send(msg)
     }
 
-    private send<T>(msg: Message<T>){
+    public setTimebox(timeboxInSeconds: number) {
+        const msg = {
+            type:    ActionTypes.SetTimebox,
+            payload: timeboxInSeconds,
+        }
+        this.send(msg)
+    }
+
+    private send<T>(msg: Message<T>) {
         if(!this.conn){ return }
 
         const payload = JSON.stringify(msg)
         this.conn.send(payload);
     }
-    
+
     public register(
-        roomID: string, 
-        playerName: string, 
-        handlerFn: HandlerFn, 
-        onOpen: HandlerFnOnOpen = () => {},
-    ){
+        roomID: string,
+        playerName: string,
+        handlerFn: HandlerFn,
+        onOpen: HandlerFnOnOpen = () => { },
+    ) {
         const url = this.urlRoomAndPlayer(roomID, playerName)
         let conn = this.conn
         if( !conn ){
             conn = new WebSocket(url);
             this.conn = conn
         }
-        
+
         conn.onopen = (e) => {
             console.info("[open] Connection established");
             onOpen()
         };
-        
+
         conn.onmessage = (event) => {
             const parsedData = JSON.parse(event.data)
             handlerFn(parsedData)
         };
-        
+
         conn.onclose = (event) => {
             if (event.wasClean) {
                 console.info(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
@@ -140,17 +149,16 @@ export class API {
                 console.info('[close] Connection died');
             }
         };
-        
-        conn.onerror = (error) =>  {
+
+        conn.onerror = (error) => {
             console.error(`[error] ${JSON.stringify(error)}`);
         };
-        
+
     }
-    
-        public urlRoomAndPlayer(roomID: string, playerName: string): string {
-            const path = [this.url,"room",roomID,playerName].join("/")
-            const url = new URL(path)
-            return url.toString()
-        }
+
+    public urlRoomAndPlayer(roomID: string, playerName: string): string {
+        const path = [this.url, "room", roomID, playerName].join("/")
+        const url = new URL(path)
+        return url.toString()
     }
-    
+}

@@ -3,29 +3,34 @@ package store
 import (
 	"encoding/json"
 	"sync"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/sprinteins/poker/src/x/types"
 )
 
 type Room struct {
-	id         types.ID
-	players    []*Player
-	mtx        sync.Mutex
-	status     Status
-	cards      Cards
-	autoReveal bool
+	id               types.ID
+	players          []*Player
+	mtx              sync.Mutex
+	status           Status
+	cards            Cards
+	autoReveal       bool
+	timeboxInSeconds uint
+	timer            *time.Timer
 }
 
 var defaultCards = cardSets[0]
 
 func NewRoom(id types.ID) Room {
 	return Room{
-		id:         id,
-		players:    make([]*Player, 0),
-		status:     StatusStart,
-		cards:      defaultCards.Cards,
-		autoReveal: false,
+		id:               id,
+		players:          make([]*Player, 0),
+		status:           StatusStart,
+		cards:            defaultCards.Cards,
+		autoReveal:       false,
+		timeboxInSeconds: 0,
+		timer:            nil,
 	}
 }
 
@@ -79,12 +84,13 @@ func (r *Room) RemovePlayer(p Player) {
 }
 
 type State struct {
-	Player     *Player   `json:"player"`
-	Players    []*Player `json:"players"`
-	Status     Status    `json:"status"`
-	Cards      Cards     `json:"cards"`
-	Sets       []Set     `json:"sets"`
-	AutoReveal bool      `json:"autoReveal"`
+	Player           *Player   `json:"player"`
+	Players          []*Player `json:"players"`
+	Status           Status    `json:"status"`
+	Cards            Cards     `json:"cards"`
+	Sets             []Set     `json:"sets"`
+	AutoReveal       bool      `json:"autoReveal"`
+	TimeboxInSeconds uint      `json:"timeboxInSeconds"`
 }
 
 func (r *Room) EmitState() {
@@ -96,12 +102,13 @@ func (r *Room) EmitState() {
 	for _, player := range r.players {
 
 		state := State{
-			Player:     player,
-			Players:    r.players,
-			Status:     r.status,
-			Cards:      r.cards,
-			Sets:       cardSets,
-			AutoReveal: r.autoReveal,
+			Player:           player,
+			Players:          r.players,
+			Status:           r.status,
+			Cards:            r.cards,
+			Sets:             cardSets,
+			AutoReveal:       r.autoReveal,
+			TimeboxInSeconds: r.timeboxInSeconds,
 		}
 		payload, err := json.Marshal(state)
 		if err != nil {
@@ -122,6 +129,12 @@ func (r *Room) StartVoting() {
 	}).Info("start voting")
 
 	r.status = StatusInProgress
+
+	if r.timer != nil {
+		log.Printf("stopping timer of previous voting round for roomid=%s", r.id)
+		r.timer.Stop()
+	}
+	go r.RevealIfTimeboxIsUp()
 	r.EmitState()
 }
 
@@ -180,6 +193,17 @@ func (r *Room) AutoRevealIfCan() {
 	if r.autoReveal && r.HasEverybodyChosen() {
 		r.Reveal()
 	}
+}
+
+func (r *Room) RevealIfTimeboxIsUp() {
+	if r.timeboxInSeconds == 0 {
+		return
+	}
+
+	r.timer = time.NewTimer(time.Duration(r.timeboxInSeconds) * time.Second)
+	<-r.timer.C
+	r.Reveal()
+
 }
 
 func (r *Room) HasEverybodyChosen() bool {
@@ -248,6 +272,17 @@ func (r *Room) SetAutoReveal(autoReveal bool) {
 		"roomID":     r.id,
 	}).Info("set auto reveal")
 	r.autoReveal = autoReveal
+	r.EmitState()
+}
+
+func (r *Room) SetTimebox(timeboxInSeconds uint) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	r.timeboxInSeconds = timeboxInSeconds
+	log.WithFields(log.Fields{
+		"timebox": r.timeboxInSeconds,
+		"roomID":  r.id,
+	}).Info("set timebox seconds")
 	r.EmitState()
 }
 

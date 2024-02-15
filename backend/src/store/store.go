@@ -77,7 +77,6 @@ func (s *Store) StartVoting(roomID types.ID) {
 	}
 
 	room.StartVoting()
-
 }
 
 func (s *Store) Reveal(roomID types.ID) {
@@ -151,6 +150,15 @@ func (s *Store) SetAutoReveal(roomID types.ID, autoReveal bool) {
 	}
 
 	room.SetAutoReveal(autoReveal)
+}
+
+func (s *Store) SetTimebox(roomID types.ID, timeboxInSeconds uint) {
+	room := s.searchRoom(roomID)
+	if room == nil {
+		return
+	}
+
+	room.SetTimebox(timeboxInSeconds)
 }
 
 func (s *Store) SetAdmin(roomID types.ID, newAdminID types.ID) {

@@ -27,6 +27,16 @@
         api.setAutoReveal(autoReveal)
     }
 
+    //
+    // Auto Reveal Timer
+    //
+    export let timeboxInSeconds = 0
+    function onTimeboxChange(event: Event){
+        const timeboxEl = event.target as HTMLInputElement
+        const timeboxInSeconds = Number(timeboxEl.value) as number
+        api.setTimebox(timeboxInSeconds)
+    }
+
     // 
     // Give Admin To
     // 
@@ -100,6 +110,18 @@
     />
 
     <label>
+        <span class="time-box-label">Timebox in s</span>
+        <input 
+        class="select" 
+        type="number" 
+        min="0"  
+        step="5" 
+        disabled={status === Status.InProgress}
+        on:change={onTimeboxChange} 
+            value={timeboxInSeconds} />
+    </label>
+
+    <label>
         <span class="give-admin-label">Give admin to</span>
         <select disabled={status === Status.InProgress} on:change={onAdminChange}>
             {#each players as player, pi}
@@ -155,7 +177,7 @@
         justify-content: end;
     }
 
- button {
+    button {
         min-width: 10rem;
         height:    4rem;
         padding:   0 0.5rem;
@@ -174,5 +196,24 @@
         letter-spacing: 0.1em;
         font-family:    var(--font-all-capital);
         text-transform: uppercase;
+    }
+
+    .time-box-label{
+        letter-spacing: 0.1em;
+        font-family:    var(--font-all-capital);
+        text-transform: uppercase;
+        padding:        0 0.5rem;
+        height:         4rem;
+        color:          white;
+    }
+
+    input{
+        border-width:  0.25rem;
+        width:         4rem;
+        height:        1.5rem;
+    }
+
+    input:focus{
+        box-shadow: none;
     }
 </style>

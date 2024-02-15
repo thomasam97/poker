@@ -14,6 +14,7 @@ const (
 	TypeSwitchCardBack = "SwitchCardBack"
 	TypeSetCards       = "SetCards"
 	TypeSetAutoReveal  = "SetAutoReveal"
+	TypeSetTimebox     = "SetTimebox"
 	TypeSetAdmin       = "SetAdmin"
 	TypeReVote         = "ReVote"
 )
